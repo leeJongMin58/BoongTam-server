@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getBoongList } from '../controllers/boongController.js';
+import { getBoongList } from '../controllers/test_boongController.js';
 
 const router = Router();
 

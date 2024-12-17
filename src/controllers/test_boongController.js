@@ -1,4 +1,4 @@
-import { fetchBoongs } from '../services/boongService.js';
+import { fetchBoongs } from '../services/test_boongService.js';
 
 export const getBoongList = (req, res) => {
   try {

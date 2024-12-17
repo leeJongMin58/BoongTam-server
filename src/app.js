@@ -1,5 +1,5 @@
 import express from 'express';
-import boongRoutes from './routes/boongRoutes.js';
+import boongRoutes from './routes/test_boongRoutes.js';
 
 const app = express();
 
