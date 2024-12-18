@@ -1,5 +1,5 @@
 import { fetchBoongs } from '../services/test_boongService.js';
-import { saveUser } from '../models/boongModel.js';
+import { saveUser } from '../models/test_boongModel.js';
 
 export const getBoongList = (req, res) => {
   try {
