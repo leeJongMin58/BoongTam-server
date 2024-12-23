@@ -1,6 +1,9 @@
 import app from './app.js';
+import dotenv from "dotenv";
 
-const PORT = process.env.PORT || 3000;
+dotenv.config();
+
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`서버가${PORT}번 포트에서 매우 잘 실행중`);
