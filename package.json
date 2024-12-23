@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "\"# BoongTam-server\"",
+  "description": "# BoongTam-server",
   "type": "module",
   "main": "src/index.js",
   "scripts": {
@@ -10,7 +10,8 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
+    "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
@@ -18,12 +19,10 @@
     "express": "^4.21.2",
     "express-validator": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
+    "mariadb": "^3.4.0",
     "mysql2": "^3.11.5",
     "nodemon": "^3.1.9",
     "sequelize": "^6.37.5",
     "sequelize-cli": "^6.6.2"
-  },
-  "dependencies": {
-    "mariadb": "^3.4.0"
   }
 }
