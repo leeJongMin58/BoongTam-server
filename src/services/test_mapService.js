@@ -1,22 +1,51 @@
-export const fetchNearbyStores = async (lat, lng, lat_lu, lng_lu, lat_ru, lng_ru) => {
-    // 예제: 현재는 하드코딩된 샘플 데이터를 반환
-    return [
-        {
-            store_id: 1,
-            store_name: "붕어빵 매장 A",
-            address: "서울특별시 강남구 역삼동 123-4",
-            latitude: 37.501123,
-            longitude: 127.034567,
-            heart_count: 22,
-        },
-        {
-            store_id: 2,
-            store_name: "붕어빵 매장 B",
-            address: "서울특별시 강남구 역삼동 234-5",
-            latitude: 37.502345,
-            longitude: 127.035678,
-            heart_count: 15,
-        },
-        // 추가 샘플 데이터                                                   
-    ];
+import db from '../database/connection.js';
+
+export const fetchNearbyStores = async (lat, lng, lat_lu, lng_lu, lat_rd, lng_rd) => {
+    try {
+        const query = `
+            SELECT 
+                store_id, 
+                store_name, 
+                address, 
+                latitude, 
+                longitude, 
+                heart_count,
+                (6371 * ACOS(
+                    COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + 
+                    SIN(RADIANS(?)) * SIN(RADIANS(latitude))
+                )) AS distance
+            FROM Stores
+            WHERE 
+                latitude BETWEEN ? AND ? AND 
+                longitude BETWEEN ? AND ?
+            ORDER BY 
+                distance ASC
+            LIMIT 5;
+        `;
+
+        const parameters = [
+            lat, lng,        // 위도와 경도
+            lat,             // 위도 (두 번째 위치)
+            lat_rd, lat_lu,  // 위도 범위
+            lng_rd, lng_lu   // 경도 범위
+        ];
+
+        console.log("실행할 쿼리 및 파라미터:", query);
+        console.log("파라미터:", parameters);
+
+        // 쿼리 실행 후 결과 받아오기
+        const rows = await db.query(query, parameters);
+        console.log('순수한 row', rows)
+
+        if (rows && Array.isArray(rows)) {
+            console.log("쿼리 결과:", rows);  // 쿼리 결과 확인
+            return rows;
+        } else {
+            console.log('쿼리 결과가 배열이 아닙니다. 결과:', rows);
+            return [];  // 빈 배열 반환
+        }
+    } catch (error) {
+        console.error("DB 조회 오류:", error);
+        throw new Error("DB 조회 중 오류가 발생했습니다.");
+    }
 };

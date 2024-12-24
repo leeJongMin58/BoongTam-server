@@ -1,5 +1,6 @@
 import { fetchBoongs } from '../services/test_boongService.js';
 import { saveUser } from '../models/test_boongModel.js';
+import { testDbConnection } from '../services/test_boongService.js';
 
 export const getBoongList = (req, res) => {
   try {
@@ -17,7 +18,30 @@ export const getBoongList = (req, res) => {
     });
   }
 };
-
+// DB 연결 테스트를 위한 컨트롤러 함수
+export const checkDbConnection = async (req, res) => {
+  try {
+      const result = await testDbConnection();
+      if (result.length > 0) {
+          res.status(200).json({
+              code: 200,
+              msg: 'DB 연결이 성공적으로 이루어졌습니다.',
+              data: result,
+          });
+      } else {
+          res.status(404).json({
+              code: 404,
+              msg: 'DB에서 데이터를 찾을 수 없습니다.',
+          });
+      }
+  } catch (error) {
+      console.error('DB 연결 확인 중 오류 발생:', error);
+      res.status(500).json({
+          code: 500,
+          msg: '서버 오류가 발생했습니다.',
+      });
+  }
+};
 // 사용자 정보 저장 API 핸들러
 const registerUser = async (req, res) => {
     const { user_id, username, user_text } = req.body;
