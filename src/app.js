@@ -1,5 +1,5 @@
 import express from 'express';
-import boongRoutes from './routes/test_boongRoutes.js';
+import boongRoutes from './routes/LoginRoute.js';
 import goodsRoutes from './routes/goodsRoutes.js'
 import { connectDB } from './database/connection.js';
 
