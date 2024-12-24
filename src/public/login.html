@@ -24,6 +24,9 @@
                         const nickname = result.kakao_account.profile.nickname || 'No nickname';
                         const token = authObj.access_token;
 
+                        // 세션 스토리지에 토큰 저장
+                        sessionStorage.setItem('token', token);
+
                         // 서버로 사용자 데이터 전송
                         fetch('/api/save-user', {
                             method: 'POST',
@@ -41,12 +44,8 @@
                             console.log('서버 응답:', data);
                             alert('로그인 데이터 저장 성공!');
 
-                            // 받아온 사용자 정보를 화면에 표시
-                            document.getElementById('result').innerHTML = `
-                                <p>사용자 ID: ${id}</p>
-                                <p>닉네임: ${nickname}</p>
-                                <p>토큰: ${token}</p>
-                            `;
+                            // 페이지 이동
+                            window.location.href = '/next-page.html';  // 다음 페이지로 이동
                         })
                         .catch(err => {
                             console.error('데이터 저장 실패:', err);

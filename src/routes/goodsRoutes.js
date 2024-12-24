@@ -1,15 +1,17 @@
 import { Router } from "express";
-import { getTrackingHistory } from "../controllers/boongController.js";
+//import { getTrackingHistory } from "../controllers/kakaoController.js";
+import { getGoods } from '../controllers/goodsController.js';
 const router = Router();
 
 
 // 택배 조회 api 
-router.get("/post", getTrackingHistory);
+// router.get("/post", getTrackingHistory);
    
 
 
 // 메인굿즈
-router.get('/goods')
+router.get('/', getGoods)
+
 // 핫붕템
 router.get('/hotitems')
 //장바구니
