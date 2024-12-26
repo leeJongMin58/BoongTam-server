@@ -1,4 +1,4 @@
-import { fetchNearbyStores } from '../services/test_mapService.js';
+import { fetchNearbyStores } from '../services/boongService.js';
 
 export const getNearbyStores = async (req, res) => {
     // 쿼리 파라미터 추출
@@ -45,12 +45,13 @@ export const getNearbyStores = async (req, res) => {
                 message: "잘못된 좌표 값이 전달되었습니다.",
             });
         }
+
         // 성공적인 응답 반환
         res.status(200).json({
             code: 200,
             msg: "통신 성공",
             count: stores.length,
-            data: stores,
+            data: stores[0],
         });
     } catch (error) {
         console.error("컨트롤러 오류:", error);

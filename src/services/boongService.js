@@ -1,4 +1,4 @@
-import db from '../database/connection.js';
+import { getDB } from '../database/connection.js';
 
 export const fetchNearbyStores = async (lat, lng, lat_lu, lng_lu, lat_rd, lng_rd) => {
     try {
@@ -33,11 +33,19 @@ export const fetchNearbyStores = async (lat, lng, lat_lu, lng_lu, lat_rd, lng_rd
         console.log("실행할 쿼리 및 파라미터:", query);
         console.log("파라미터:", parameters);
 
-        // 쿼리 실행 후 결과 받아오기
-        const rows = await db.query(query, parameters);
-        console.log('순수한 row', rows)
+        const db = getDB(); // `getDB`로 db 객체 가져오기
+        if (!db) throw new Error("DB가 초기화되지 않았습니다.");
 
+        const rows = await db.query(query, parameters);
+        //console.log('순수한 row', rows)
+        
         if (rows && Array.isArray(rows)) {
+            rows.forEach(row => {
+                if (row.store_image && row.store_image instanceof Buffer) {
+                    // 예시: store_image가 Buffer인 경우 이를 Base64로 변환
+                    row.store_image = row.store_image.toString('base64');
+                }
+            });
             console.log("쿼리 결과:", rows);  // 쿼리 결과 확인
             return rows;
         } else {
