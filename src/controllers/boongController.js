@@ -50,7 +50,7 @@ export const getNearbyStores = async (req, res) => {
         res.status(200).json({
             code: 200,
             msg: "통신 성공",
-            count: stores.length,
+            count: stores[0].length,
             data: stores[0],
         });
     } catch (error) {
