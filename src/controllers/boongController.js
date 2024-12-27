@@ -1,4 +1,5 @@
 import { fetchNearbyStores } from '../services/boongService.js';
+import { getStoreDetails, getStoreMenu, getStorePhotos, getStoreReviews } from '../models/storeModel.js';
 
 export const getNearbyStores = async (req, res) => {
     // 쿼리 파라미터 추출
@@ -58,6 +59,55 @@ export const getNearbyStores = async (req, res) => {
         res.status(500).json({
             code: 500,
             message: "서버 오류가 발생했습니다.",
+        });
+    }
+};
+
+export const getStoreInfo = async (req, res) => {
+    const { storeid, tab = 'detail', sort, filter } = req.query;
+
+    // storeid가 없는 경우 처리
+    if (!storeid) {
+        return res.status(400).json({
+            code: 400,
+            message: "storeid는 필수입니다.",
+        });
+    }
+
+    try {
+        let data;
+
+        // 각 tab에 대한 처리
+        switch (tab) {
+            case 'detail':
+                data = await getStoreDetails(storeid);
+                break;
+            case 'menu':
+                data = await getStoreMenu(storeid);
+                break;
+            case 'photo':
+                data = await getStorePhotos(storeid, filter);
+                break;
+            case 'reviews':
+                data = await getStoreReviews(storeid, sort);
+                break;
+            default:
+                return res.status(400).json({
+                    code: 400,
+                    message: "잘못된 tab 값입니다.",
+                });
+        }
+
+        // 응답 반환
+        res.status(200).json({
+            code: 200,
+            message: "성공",
+            data: data[0],
+        });
+    } catch (error) {
+        res.status(500).json({
+            code: 500,
+            message: `서버 오류: ${error.message}`,
         });
     }
 };

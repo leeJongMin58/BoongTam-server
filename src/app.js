@@ -1,6 +1,5 @@
 import express from 'express';
-import mapRoutes from './routes/boongRoutes.js';
-
+import router from './routes/boongRoutes.js';
 
 const app = express();
 
@@ -8,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 // Routes
-app.use('/boong', mapRoutes); // 기존 BASE_URL을 '/main'으로 설정
+app.use('/boong', router);
 
 
 // Default Error Handling
@@ -18,7 +17,5 @@ app.use((err, req, res, next) => {
     message: err.message || 'Internal Server Error',
   });
 });
-
-
 
 export default app;
