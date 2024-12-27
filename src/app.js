@@ -1,11 +1,10 @@
 import express from 'express';
 import mapRoutes from './routes/boongRoutes.js';
 
-
-const app = express();
+const app = express()
 
 // Middleware
-app.use(express.json());
+app.use(express.json())
 
 // Routes
 app.use('/boong', mapRoutes); // 기존 BASE_URL을 '/main'으로 설정
@@ -21,4 +20,4 @@ app.use((err, req, res, next) => {
 
 
 
-export default app;
+export default app

@@ -1,9 +1,9 @@
 # **BoongTam-server**
 
-# 12.16 first commit_gitignore
+### 12.16 first commit_gitignore
 
-# 12.17 db연동 및 테스트 완료
-# 12.18 환경 변수 설정을 .env 파일로 분리하여 데이터베이스 연결 정보 관리
+### 12.17 db연동 및 테스트 완료
+### 12.18 환경 변수 설정을 .env 파일로 분리하여 데이터베이스 연결 정보 관리
 
 ### .env 작성요령 (12월 26일 업데이트)
 src 밖에 .env 파일 생성
@@ -18,12 +18,18 @@ DB_PORT=3307          # MariaDB 포트 (기본 3306)
 - 각자의 정보에 맞게 바꿔야 합니다! 또한 공백은 없게 해야 해요
 - 소스코드는 /config.js  부분 살펴보세요
 
-# 12월 23일 map api 실제 작동 방식으로 수정
+### 12.23 sql 쿼리 추가
+1. vscode 확장 프로그램 "MySQL" 설치
+2. Connect to server에 자신의 db 정보 입력
+ - HOST, PORT, USERNAME, Password
+3. src/database.sql 에서 하나씩 ▷RUN 실행
+
+### 12월 23일 map api 실제 작동 방식으로 수정
 - DB에 가상의 매장 15개 생성
     1) 엔드포인트로 받아온 (query형식의) 좌표값을 활용하여 화면 안에 있는 매장들 추린 후
     2) 현재 위치에서 가장 가까운 5개의 매장 뽑아올 수 있게 하였습니다
 
-# 12월 26일 map api 및 기타 파일 수정
+### 12월 26일 map api 및 기타 파일 수정
 - 시원 님과 db 호출 방식 통일
 - test용으로 만들었던 api 삭제
 - map -> boong으로 이름 변경
