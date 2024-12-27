@@ -8,7 +8,10 @@ const app = express()
 app.use(express.json())
 
 // Routes
-app.use('/api', boongRoutes);
+app.use('/auth', boongRoutes);
+
+// 붕템샵 
+app.use('/goods',goodsRoutes);
 
 // Routes
 app.use('/main', mapRoutes); // 기존 BASE_URL을 '/main'으로 설정
