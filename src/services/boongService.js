@@ -33,16 +33,14 @@ export const fetchNearbyStores = async (lat, lng, lat_lu, lng_lu, lat_rd, lng_rd
         console.log("실행할 쿼리 및 파라미터:", query);
         console.log("파라미터:", parameters);
 
-        const db = getDB(); // `getDB`로 db 객체 가져오기
+        const db = getDB();
         if (!db) throw new Error("DB가 초기화되지 않았습니다.");
 
         const rows = await db.query(query, parameters);
-        //console.log('순수한 row', rows)
         
         if (rows && Array.isArray(rows)) {
             rows.forEach(row => {
                 if (row.store_image && row.store_image instanceof Buffer) {
-                    // 예시: store_image가 Buffer인 경우 이를 Base64로 변환
                     row.store_image = row.store_image.toString('base64');
                 }
             });
