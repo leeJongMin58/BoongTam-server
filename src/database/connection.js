@@ -1,4 +1,5 @@
 import mysql from 'mysql2/promise';
+//import mysql from 'mysql2';
 import { DB_CONFIG } from '../config.js';
 
 // 환경 변수 로드
@@ -16,6 +17,7 @@ export const connectDB = async () => {
 
 export const getDB = () => db;
 
+/*
 // query를 Promise로 감싸서 사용
 export const queryDB = (query, params) => {
   return new Promise((resolve, reject) => {
@@ -24,6 +26,6 @@ export const queryDB = (query, params) => {
           resolve(results);
       });
   });
-};
+};*/
 
-export default db; // 새로 추가한 부분
+//export default db; // 새로 추가한 부분

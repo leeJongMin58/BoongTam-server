@@ -1,6 +1,5 @@
 import { saveUserToDB } from '../models/loginModel.js';  // 모델 파일에서 saveUser 함수 가져오기
 
-
 //사용자 정보 저장
 const saveUser = async (req, res) => {
     const { id, nickname,token } = req.body;

@@ -1,6 +1,7 @@
 # **BoongTam-server**
 
 ### 12.16 first commit_gitignore
+### 12.16 first commit_gitignore
 
 ### 12.17 db연동 및 테스트 완료
 ### 12.18 환경 변수 설정을 .env 파일로 분리하여 데이터베이스 연결 정보 관리

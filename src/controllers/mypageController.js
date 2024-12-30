@@ -3,8 +3,9 @@ import { fetchUserFromKakao } from '../services/mypageService.js';
 
 // 사용자 정보 조회
 export const getUserInfo = async (req, res) => {
-    const { token } = req.query;
-
+    //const { token } = req.query;
+    const token = req.headers.authorization; // 헤더에서 토큰 가져오기
+    
     if (!token) {
         return res.status(400).json({ msg: '토큰이 제공되지 않았습니다.' });
     }

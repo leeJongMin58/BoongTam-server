@@ -1,7 +1,7 @@
-import app from './app.js';
-import { connectDB } from './database/connection.js';
+import app from './src/app.js';
+import { connectDB } from './src/database/connection.js';
 
-const PORT = process.env.PORT || 8082;
+const PORT = process.env.PORT || 8080;
 /*
 app.listen(PORT, () => {
   console.log(`서버가${PORT}번 포트에서 매우 잘 실행중`);
