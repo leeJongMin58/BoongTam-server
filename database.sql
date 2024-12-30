@@ -35,8 +35,6 @@ CREATE TABLE `users` (
     )
 );
 
-
-
 CREATE TABLE `goods` (
     `goods_id` int NOT NULL AUTO_INCREMENT,
     `goods_name` varchar(100) NOT NULL,
@@ -44,8 +42,11 @@ CREATE TABLE `goods` (
     `goods_price` decimal(10, 2) NOT NULL,
     `goods_stock` int NOT NULL DEFAULT '0',
     `image_url` varchar(255) DEFAULT NULL,
+    `Category` varchar(255) NOT NULL,
+    `SubCategory` varchar(255) NOT NULL,
+    `total_sales` int DEFAULT '0',
     PRIMARY KEY (`goods_id`)
-) 
+)
 
 CREATE TABLE `cart` (
     `cart_id` int NOT NULL AUTO_INCREMENT,
@@ -77,20 +78,20 @@ CREATE TABLE `stores` (
 ) 
 
 CREATE TABLE `store_reviews` (
-    `store_review_id` int NOT NULL AUTO_INCREMENT,
-    `store_id` int NOT NULL,
-    `user_id` bigint NOT NULL,
-    `review_text` text,
-    `review_rating` int DEFAULT NULL,
-    `review_date` datetime DEFAULT NULL,
-    `review_heart` int DEFAULT '0',
+    `store_review_id` int(11) NOT NULL AUTO_INCREMENT,
+    `store_id` int(11) NOT NULL,
+    `user_id` bigint(20) NOT NULL,
+    `review_text` text DEFAULT NULL,
+    `review_rating` int(11) DEFAULT NULL,
+    `review_date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    `review_heart` int(11) DEFAULT 0,
     `store_review_photo_url` varchar(255) NOT NULL,
     PRIMARY KEY (`store_review_id`),
     KEY `store_id` (`store_id`),
     KEY `user_id` (`user_id`),
     CONSTRAINT `store_reviews_ibfk_1` FOREIGN KEY (`store_id`) REFERENCES `stores` (`store_id`),
     CONSTRAINT `store_reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) 
+)
 
 CREATE TABLE `comments` (
     `comment_id` int NOT NULL AUTO_INCREMENT,
@@ -212,12 +213,11 @@ CREATE TABLE `photos` (
     `photo_id` int NOT NULL AUTO_INCREMENT,
     `store_id` int NOT NULL,
     `photo_url` varchar(255) NOT NULL,
-    `photo_category` enum('가게 내부', '가게 외부', '메뉴 사진') NOT NULL,
+    `photo_category` enum('inner', 'outer', 'menu') NOT NULL,
     PRIMARY KEY (`photo_id`),
     KEY `store_id` (`store_id`),
     CONSTRAINT `photos_ibfk_1` FOREIGN KEY (`store_id`) REFERENCES `stores` (`store_id`)
 )
-
 
 
 CREATE TABLE `store_details` (

@@ -1,7 +1,7 @@
-import app from './app.js';
-import { connectDB } from './database/connection.js';
+import app from './src/app.js';
+import { connectDB } from './src/database/connection.js';
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 8080;
 
 const startServer = async () => {
   try {
