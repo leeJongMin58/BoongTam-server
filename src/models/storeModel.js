@@ -42,11 +42,11 @@ export const getStoreReviews = async (storeid, sort) => {
     if (sort === 'latest') {
         query += ' ORDER BY review_date DESC';
     } else if (sort === 'most_liked') {
-        query += ' ORDER BY heart_count DESC';
+        query += ' ORDER BY review_heart DESC';
     }
 
     const connection = await getDB();
     const result4 = await connection.execute(query, params);
-    
+
     return result4;
 };
