@@ -15,3 +15,16 @@ export const getGoodsFromDB = async (count, pageNumber) => {
   return result[0];
 };
 
+//핫붕템
+export const getHotGoodsFromDB = async (count) => {
+  const limit = parseInt(count); // 가져올 항목 수
+  const query = `
+      SELECT goods_id, goods_name, goods_description, goods_price, goods_stock, image_url, category, subcategory, total_sales
+      FROM goods
+      ORDER BY total_sales DESC
+      LIMIT ?;
+    `;
+  const connection = getDB();
+  const result = await connection.query(query, limit);
+  return result[0];
+};

@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { getGoodsFromDB } from '../models/goodsModel.js';
+import { getGoodsFromDB, getHotGoodsFromDB } from '../models/goodsModel.js';
 
 export const fetchUserFromKakao = async (token) => {
   const response = await fetch('https://kapi.kakao.com/v2/user/me', {
@@ -20,3 +20,7 @@ export const fetchUserFromKakao = async (token) => {
 export const fetchGoodsFromDB = async (count, pageNumber) => {
   return await getGoodsFromDB(count, pageNumber);
 };
+
+export const fetchHotGoodsFromDB = async (count) =>{
+  return await getHotGoodsFromDB (count)
+}
