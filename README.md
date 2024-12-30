@@ -29,3 +29,41 @@ DB_PORT=3307          # MariaDB 포트 (기본 3306)
 - map -> boong으로 이름 변경
   >> {{base}}boong?lat=37.501&lng=127.035&lat_lu=37.5015&lng_lu=127.0355&lat_rd=37.500000&lng_rd=127.0345 
   이로 인해 URL 변경
+
+
+# 12월 28일
+- 메인_맵 api 완성
+    - boong?
+
+# 12월 30일
+- 메인_매장 상세 정보 api 완성
+    - boong/store?
+
+
+
+> sql 수정 사항
+1. CREATE TABLE `photos` (
+    `photo_id` int NOT NULL AUTO_INCREMENT,
+    `store_id` int NOT NULL,
+    `photo_url` varchar(255) NOT NULL,
+    `photo_category` enum('inner', 'outer', 'menu') NOT NULL,
+    PRIMARY KEY (`photo_id`),
+    KEY `store_id` (`store_id`),
+    CONSTRAINT `photos_ibfk_1` FOREIGN KEY (`store_id`) REFERENCES `stores` (`store_id`)
+)
+
+2. CREATE TABLE `store_reviews` (
+    `store_review_id` int(11) NOT NULL AUTO_INCREMENT,
+    `store_id` int(11) NOT NULL,
+    `user_id` bigint(20) NOT NULL,
+    `review_text` text DEFAULT NULL,
+    `review_rating` int(11) DEFAULT NULL,
+    `review_date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    `review_heart` int(11) DEFAULT 0,
+    `store_review_photo_url` varchar(255) NOT NULL,
+    PRIMARY KEY (`store_review_id`),
+    KEY `store_id` (`store_id`),
+    KEY `user_id` (`user_id`),
+    CONSTRAINT `store_reviews_ibfk_1` FOREIGN KEY (`store_id`) REFERENCES `stores` (`store_id`),
+    CONSTRAINT `store_reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) 
