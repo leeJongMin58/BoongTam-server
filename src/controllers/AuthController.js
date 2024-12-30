@@ -1,5 +1,5 @@
 import { KAKAO_CONFIG } from '../config'
-import { saveUserToDB } from '../models/loginModel'
+import { saveUserToDB } from '../models/authModel'
 import errorCode from '../util/error'
 
 const KAKAO_RESET_API = KAKAO_CONFIG.REST_KEY
