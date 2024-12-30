@@ -14,8 +14,7 @@ export const getStoreMenu = async (storeid) => {
     const query = 'SELECT * FROM Menu WHERE store_id = ?';
     const connection = await getDB();
     const result2 = await connection.execute(query, [storeid]);
-    //const [rows] = await db.query(query, [storeid]);
-    //return rows;
+
     return result2;
 };
 
@@ -29,10 +28,9 @@ export const getStorePhotos = async (storeid, filter) => {
         params.push(filter);
     }
 
-    /*const [rows] = await db.query(query, params);
-    return rows;*/
     const connection = await getDB();
     const result3 = await connection.execute(query, params);
+
     return result3;
 };
 
@@ -46,11 +44,9 @@ export const getStoreReviews = async (storeid, sort) => {
     } else if (sort === 'most_liked') {
         query += ' ORDER BY heart_count DESC';
     }
-    /*
-    const [rows] = await db.query(query, params);
-    return rows;*/
 
     const connection = await getDB();
     const result4 = await connection.execute(query, params);
+    
     return result4;
 };
