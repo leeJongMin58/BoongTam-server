@@ -35,18 +35,31 @@ export const getStorePhotos = async (storeid, filter) => {
 };
 
 // 매장 리뷰 정보 조회
+// users 테이블과 조인하여 닉네임을 포함한 리뷰 데이터를 가져오도록
 export const getStoreReviews = async (storeid, sort) => {
-    let query = 'SELECT * FROM Store_reviews WHERE store_id = ?';
+    let query = `
+        SELECT 
+            sr.*,
+            u.nickname
+        FROM 
+            Store_reviews sr
+        JOIN 
+            users u
+        ON 
+            sr.user_id = u.id
+        WHERE 
+            sr.store_id = ?
+    `;
     const params = [storeid];
 
     if (sort === 'latest') {
-        query += ' ORDER BY review_date DESC';
+        query += ' ORDER BY sr.review_date DESC';
     } else if (sort === 'most_liked') {
-        query += ' ORDER BY review_heart DESC';
+        query += ' ORDER BY sr.review_heart DESC';
     }
 
     const connection = await getDB();
-    const result4 = await connection.execute(query, params);
+    const [result4] = await connection.execute(query, params);
 
     return result4;
 };
