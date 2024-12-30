@@ -17,15 +17,5 @@ export const connectDB = async () => {
 
 export const getDB = () => db;
 
-/*
-// query를 Promise로 감싸서 사용
-export const queryDB = (query, params) => {
-  return new Promise((resolve, reject) => {
-      db.query(query, params, (err, results) => {
-          if (err) return reject(err);
-          resolve(results);
-      });
-  });
-};*/
 
-//export default db; // 새로 추가한 부분
+export default db; // 새로 추가한 부분

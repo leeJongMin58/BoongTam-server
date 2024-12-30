@@ -31,12 +31,15 @@ app.use('/user', mp_router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+
 // Default Error Handling
 app.use((err, req, res, next) => {
-	res.status(err.status || 500).json({
-		success: false,
-		message: err.message || 'Internal Server Error',
-	})
-})
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Internal Server Error',
+  });
+});
+
+
 
 export default app
