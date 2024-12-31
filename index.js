@@ -5,7 +5,7 @@ const PORT = 80
 
 const startServer = async () => {
 	try {
-		//await connectDB() // DB 연결 초기화
+		await connectDB() // DB 연결 초기화
 		app.listen(PORT, () => {
 			console.log(`서버가 ${PORT}번 포트에서 매우 잘 실행중`)
 		})

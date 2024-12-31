@@ -10,16 +10,16 @@ const app = express()
 app.use(express.json())
 
 // Routes
-// app.use('/auth', authRoutes)
+app.use('/auth', authRoutes)
 
 // 메인
-// app.use('/boong', boongRoutes)
+app.use('/boong', boongRoutes)
 
 // 붕템샵
-// app.use('/goods', goodsRoutes)
+app.use('/goods', goodsRoutes)
 
 // 마이페이지
-// app.use('/user', mypageRoutes)
+app.use('/user', mypageRoutes)
 
 // test code
 app.get('/test', (req, res) => {

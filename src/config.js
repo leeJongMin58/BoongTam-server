@@ -13,6 +13,14 @@ export const DB_CONFIG = {
 	port: process.env.DB_PORT || 3307, // 기본값을 3306으로 설정 //이거 유의
 }
 
+export const SERVER_DB_CONFIG = {
+	host: process.env.SERVER_DB_HOST,
+	user: process.env.SERVER_DB_USER,
+	password: process.env.SERVER_DB_PASSWORD,
+	database: process.env.SERVER_DB_DATABASE,
+	port: process.env.SERVER_DB_PORT
+}
+
 export const KAKAO_CONFIG = {
 	rest: process.env.KAKAO_REST_API_KEY,
 	js: process.env.KAKAO_JS_API_KEY,
