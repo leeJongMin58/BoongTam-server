@@ -1,5 +1,4 @@
 import mysql from 'mysql2/promise'
-//import mysql from 'mysql2';
 import { DB_CONFIG } from '../config.js'
 
 // 환경 변수 로드
