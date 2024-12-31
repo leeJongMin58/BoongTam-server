@@ -1,6 +1,6 @@
-import globals from 'globals';
-import pluginJs from '@eslint/js';
-import pluginReact from 'eslint-plugin-react';
+import globals from 'globals'
+import pluginJs from '@eslint/js'
+import pluginReact from 'eslint-plugin-react'
 
 /** @type {import('eslint').Linter.Config} */
 export default {
@@ -22,4 +22,4 @@ export default {
 		commonjs: true, // CommonJS 환경
 		es2021: true, // ES2021 지원
 	},
-};
+}
