@@ -1,7 +1,7 @@
 import app from './src/app.js'
 import { connectDB } from './src/database/connection.js'
 
-const PORT = 80
+const PORT = 8080
 
 const startServer = async () => {
 	try {

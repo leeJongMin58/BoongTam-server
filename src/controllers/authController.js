@@ -92,3 +92,52 @@ async function getKakaoInfo(access_token, res) {
 		})
 	}
 }
+
+//회원가입 
+export async function signUp(req, res) {
+    const {code,nickname, email, address1, address2 } = req.body;
+
+    // 디버깅용 로그 추가
+    console.log("Request Body:", { code,nickname, email, address1, address2 });
+
+    if (!code||!nickname || !email || !address1 || !address2) {
+        return res.status(400).json(errorCode[400]); // 적절한 에러 코드 반환
+    }
+
+    try {
+        const tokenData = await getKakaoToken(req, res);
+        if (!tokenData) {
+            return res.status(400).json(errorCode[400]);
+        }
+
+        const myInfo = await getKakaoInfo(tokenData.access_token, res);
+
+        try {
+            await saveUserToDB(
+                myInfo.id,
+                myInfo.kakao_account.profile.nickname,
+                email,
+                address1,
+                address2,
+                tokenData.access_token
+            );
+        } catch (err) {
+            return res.status(501).json(errorCode[501]);
+        }
+
+        return res.status(201).json({
+            code: 201,
+            msg: "Login Successful",
+            data: {
+                id: myInfo.id,
+                nickname: myInfo.kakao_account.profile.nickname,
+                email,
+                address1,
+                address2,
+                token: tokenData.access_token,
+            },
+        });
+    } catch (error) {
+        return res.status(500).json(errorCode[500]);
+    }
+}
