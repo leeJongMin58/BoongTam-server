@@ -1,9 +1,9 @@
-import { KAKAO_CONFIG } from '../config'
-import { saveUserToDB } from '../models/authModel'
-import errorCode from '../util/error'
+import { KAKAO_CONFIG } from '../config.js'
+import { saveUserToDB } from '../models/authModel.js'
+import errorCode from '../util/error.js'
 
-const KAKAO_RESET_API = KAKAO_CONFIG.REST_KEY
-const REDIRECT_URI = KAKAO_CONFIG.REDIRECT_URI
+const KAKAO_RESET_API = KAKAO_CONFIG.rest
+const REDIRECT_URI = KAKAO_CONFIG.redirect_url
 const GET_KAKAO_TOKEN_URL = 'https://kauth.kakao.com/oauth/token'
 const GET_KAKAO_INFO_URL = 'https://kapi.kakao.com/v2/user/me'
 
