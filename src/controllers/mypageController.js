@@ -25,13 +25,22 @@ export const getUserInfo = async (req, res) => {
         });
     } catch (error) {
         console.error('서버 오류:', error.message);
-        const status = error.status || 500;
+        const status = error.status || 400;
+
+        if (status === 400) {
+            return res.status(400).json({
+                code: 400,
+                message: error.message || '잘못된 요청입니다.',
+                detail: error.detail || '토큰값이 올바르지 않습니다.',
+            });
+        }
+    
         res.status(status).json(errorCode[status] || {
             code: status,
             message: error.message || '서버 오류',
         });
     }
-};
+    };
 
 // 사용자 정보 수정
 export const updateUserInfo = async (req, res) => {

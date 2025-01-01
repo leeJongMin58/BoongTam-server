@@ -1,5 +1,4 @@
 // 폴더 대신 config.js로 대체
-
 import dotenv from 'dotenv'
 
 // 환경 변수 불러오기

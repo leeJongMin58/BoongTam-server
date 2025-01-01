@@ -13,10 +13,14 @@ export const fetchUserFromKakao = async (token) => {
 	if (!response.ok) {
 		throw new Error('카카오 API 오류')
 	}
+	if (!response.ok) {
+		throw new Error('카카오 API 오류')
+	}
 
 	const data = await response.json()
 	return data.id // 카카오 사용자 ID 반환
 }
+
 
 // DB에서 사용자 정보 가져오기
 export const getUserInfo = async (userId) => {

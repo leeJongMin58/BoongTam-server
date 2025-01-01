@@ -43,10 +43,13 @@ export const getStorePhotos = async (storeid, filter) => {
 		query += ' AND photo_category = ?'
 		params.push(filter)
 	}
+	if (filter) {
+		query += ' AND photo_category = ?'
+		params.push(filter)
+	}
 
 	const connection = await getDB()
 	const result3 = await connection.execute(query, params)
-
 	return result3
 }
 
@@ -67,7 +70,12 @@ export const getStoreReviews = async (storeid, sort) => {
             sr.store_id = ?
     `
 	const params = [storeid]
-
+    
+	if (sort === 'latest') {
+		query += ' ORDER BY sr.review_date DESC'
+	} else if (sort === 'most_liked') {
+		query += ' ORDER BY sr.review_heart DESC'
+	}
 	if (sort === 'latest') {
 		query += ' ORDER BY sr.review_date DESC'
 	} else if (sort === 'most_liked') {
