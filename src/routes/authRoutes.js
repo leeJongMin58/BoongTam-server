@@ -1,15 +1,9 @@
-import { Router } from "express";
-import { saveUser, register } from "../controllers/kakaoController.js";
+import express from 'express'
+import * as AuthController from '../controllers/authController.js'
 
-const router = Router();
+const route = express.Router()
 
-// POST 요청을 /register로 보내면 사용자 정보 저장
-// router.post("/register", registerUser);
-// 카카오 로그인 
-router.post('/saveuser', saveUser);
-// 회원가입 
-router.post('/register', register)
-export default router;
+// 클라이언트가 서버에 카카오 로그인 요청
+route.post('/', AuthController.requestKakaoLogin)
 
-
-// 카카오 로그인 버튼을 눌렀을때 앱 동의 항목을 눌렀을때 users테이블에 id 이미있으면 
+export default route
