@@ -76,11 +76,6 @@ export const getStoreReviews = async (storeid, sort) => {
 	} else if (sort === 'most_liked') {
 		query += ' ORDER BY sr.review_heart DESC'
 	}
-	if (sort === 'latest') {
-		query += ' ORDER BY sr.review_date DESC'
-	} else if (sort === 'most_liked') {
-		query += ' ORDER BY sr.review_heart DESC'
-	}
 
     const connection = await getDB();
     const result4 = await connection.execute(query, params);
