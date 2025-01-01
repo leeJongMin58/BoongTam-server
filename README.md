@@ -56,6 +56,10 @@ DB_PORT=3307          # MariaDB 포트 (기본 3306)
 # 12월 31일
 - 마이페이지 간단 수정 및 회원 정보 수정 api 추가
 
+# 1월 1일
+authUtil 및 다른 model에 errorcode 통합 적용
+
+
 > sql 수정 사항
 1. CREATE TABLE `photos` (
     `photo_id` int NOT NULL AUTO_INCREMENT,

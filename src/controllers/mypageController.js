@@ -1,5 +1,6 @@
 import * as mp_service from '../models/mypageModel.js'
 import { fetchUserFromKakao } from '../services/mypageService.js'
+import errorCode from '../util/error.js'
 
 // 사용자 정보 조회
 export const getUserInfo = async (req, res) => {
@@ -7,7 +8,7 @@ export const getUserInfo = async (req, res) => {
 	const token = req.headers.authorization // 헤더에서 토큰 가져오기
 
 	if (!token) {
-		return res.status(400).json({ msg: '토큰이 제공되지 않았습니다.' })
+		return res.status(401).json(errorCode[401]); // errorCode 적용
 	}
 
 	try {
@@ -24,7 +25,11 @@ export const getUserInfo = async (req, res) => {
         });
     } catch (error) {
         console.error('서버 오류:', error.message);
-        res.status(500).json({ msg: '서버 오류', error: error.message });
+        const status = error.status || 500;
+        res.status(status).json(errorCode[status] || {
+            code: status,
+            message: error.message || '서버 오류',
+        });
     }
 };
 
@@ -34,16 +39,22 @@ export const updateUserInfo = async (req, res) => {
     const token = req.headers.authorization; // 헤더에서 토큰 가져오기
 
     if (!token) {
-        return res.status(400).json({ msg: '토큰이 제공되지 않았습니다.' });
+        return res.status(401).json(errorCode[401]);
     }
 
     if (!type || !value) {
-        return res.status(400).json({ msg: '수정할 항목과 값을 모두 제공해야 합니다.' });
+        return res.status(400).json({
+            ...errorCode[400],
+            detail: '수정할 항목과 값을 모두 제공해야 합니다.',
+        });
     }
 
     if (value === null || value === undefined || value.trim() === '') {
-        return res.status(400).json({ msg: '수정할 값이 유효하지 않습니다.' });
+        return res.status(400).json({            
+            ...errorCode[400],
+            detail: '수정할 값이 유효하지 않습니다.', });
     }
+
 
     try {
         // 카카오 API에서 사용자 ID 가져오기
@@ -69,6 +80,10 @@ export const updateUserInfo = async (req, res) => {
         });
     } catch (error) {
         console.error('서버 오류:', error.message);
-        res.status(500).json({ msg: '서버 오류', error: error.message });
+        const status = error.status || 500;
+        res.status(status).json(errorCode[status] || {
+            code: status,
+            message: error.message || '서버 오류',
+        });
     }
 };
