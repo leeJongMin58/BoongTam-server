@@ -9,7 +9,7 @@ const GET_KAKAO_INFO_URL = 'https://kapi.kakao.com/v2/user/me'
 
 export async function requestKakaoLogin(req, res) {
 	if (!req.body.code) {
-		return res.status(404).json(errorCode[404])
+		return res.status(400).json(errorCode[400])
 	}
 
 	try {
@@ -20,11 +20,11 @@ export async function requestKakaoLogin(req, res) {
 			myInfo.id,
 			myInfo.kakao_account.profile.nickname,
 			tokenData.access_token,
-		).catch((err) => res.status(501).json(errorCode[501]))
+		).catch((err) => res.status(501).json(errorCode[500]))
 
 		return res.status(201).json({
 			code: 201,
-			msg: 'Login Successful',
+			msg: '카카오 로그인 성공',
 			data: {
 				user_id: myInfo.id,
 				nickname: myInfo.kakao_account.profile.nickname,
@@ -32,7 +32,7 @@ export async function requestKakaoLogin(req, res) {
 			},
 		})
 	} catch (error) {
-		return res.status(400).json(errorCode[400])
+		return res.status(500).json(errorCode[500])
 	}
 }
 
@@ -57,7 +57,7 @@ async function getKakaoToken(req, res) {
 
 		const token = await response.json()
 		if (token.error == 'invalid_grant') {
-			return res.status(404).json(errorCode[404])
+			return res.status(401).json(errorCode[401])
 		}
 		return token
 	} catch (error) {
@@ -93,51 +93,57 @@ async function getKakaoInfo(access_token, res) {
 	}
 }
 
-//회원가입 
+//회원가입
 export async function signUp(req, res) {
-    const {code,nickname, email, address1, address2 } = req.body;
+	const { code, nickname, email, address1, address2 } = req.body
 
-    // 디버깅용 로그 추가
-    console.log("Request Body:", { code,nickname, email, address1, address2 });
+	console.log('Request Body:', { code, nickname, email, address1, address2 })
 
-    if (!code||!nickname || !email || !address1 || !address2) {
-        return res.status(400).json(errorCode[400]); // 적절한 에러 코드 반환
-    }
+	if (!code || !nickname || !email || !address1 || !address2) {
+		return res.status(400).json(errorCode[400])
+	}
 
-    try {
-        const tokenData = await getKakaoToken(req, res);
-        if (!tokenData) {
-            return res.status(400).json(errorCode[400]);
-        }
+	try {
+		const tokenData = await getKakaoToken(req, res)
+		if (!tokenData) {
+			return res.status(401).json(errorCode[401])
+		}
 
-        const myInfo = await getKakaoInfo(tokenData.access_token, res);
+		const myInfo = await getKakaoInfo(tokenData.access_token, res)
 
-        try {
-            await saveUserToDB(
-                myInfo.id,
-                myInfo.kakao_account.profile.nickname,
-                email,
-                address1,
-                address2,
-                tokenData.access_token
-            );
-        } catch (err) {
-            return res.status(501).json(errorCode[501]);
-        }
+		try {
+			const saveResult = await saveUserToDB(
+				myInfo.id,
+				myInfo.kakao_account.profile.nickname,
+				email,
+				address1,
+				address2,
+				tokenData.access_token,
+			)
 
-        return res.status(201).json({
-            code: 201,
-            msg: "Login Successful",
-            data: {
-                id: myInfo.id,
-                nickname: myInfo.kakao_account.profile.nickname,
-                email,
-                address1,
-                address2,
-                token: tokenData.access_token,
-            },
-        });
-    } catch (error) {
-        return res.status(500).json(errorCode[500]);
-    }
+			if (
+				!saveResult.success &&
+				saveResult.code === 'DUPLICATE_NICKNAME'
+			) {
+				return res.status(409).json(errorCode[409])
+			}
+		} catch (err) {
+			return res.status(500).json(errorCode[500])
+		}
+
+		return res.status(201).json({
+			code: 201,
+			msg: '회원가입 성공',
+			data: {
+				id: myInfo.id,
+				nickname: myInfo.kakao_account.profile.nickname,
+				email,
+				address1,
+				address2,
+				token: tokenData.access_token,
+			},
+		})
+	} catch (error) {
+		return res.status(500).json(errorCode[500])
+	}
 }

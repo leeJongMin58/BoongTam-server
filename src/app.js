@@ -6,8 +6,6 @@ import goodsRoutes from './routes/goodsRoutes.js'
 import cors from 'cors'
 
 const app = express()
-
-
 app.use(cors())
 
 // Middleware
