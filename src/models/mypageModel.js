@@ -5,8 +5,8 @@ import { getDB } from '../database/connection.js';
 export const getUserInfo = async (userid) => {
     const query = 'SELECT id AS user_id, nickname, profile_picture, points FROM users WHERE id = ?';
 
-    const connection = await getDB();
-    const result = await connection.execute(query, [userid]);
+	const connection = await getDB()
+	const result = await connection.execute(query, [userid])
 
     return result[0];
 }
