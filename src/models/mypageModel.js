@@ -1,15 +1,35 @@
-import { getDB } from '../database/connection.js'
+import { getDB } from '../database/connection.js';
 
-// 사용자 정보 조회
+
+// 1. 사용자 정보 조회
 export const getUserInfo = async (userid) => {
-	const query =
-		'SELECT id AS user_id, nickname, profile_picture FROM users WHERE id = ?'
+    const query = 'SELECT id AS user_id, nickname, profile_picture, points FROM users WHERE id = ?';
 
 	const connection = await getDB()
 	const result = await connection.execute(query, [userid])
 
-	return result[0]
+    return result[0];
 }
+
+// 2. 사용자 정보 수정
+export const updateUserInfo = async (userid, type, value) => {
+    const query = `UPDATE users SET ${type} = ? WHERE id = ?`;
+    const connection = await getDB();
+    const result = await connection.execute(query, [value, userid]);
+
+    // 수정된 값 반환
+    return { [type]: value };  // 수정된 항목과 값 반환
+};
+
+// 사용자 정보 추가 (INSERT)
+export const insertUserInfo = async (userid, type, value) => {
+    const query = `UPDATE users SET ${type} = ? WHERE id = ?`;
+    const connection = await getDB();
+    const result = await connection.execute(query, [value, userid]);
+
+    // 추가된 값 반환
+    return { [type]: value };  // 추가된 항목과 값 반환
+};
 
 /*
 // 사용자가 작성한 리뷰를 조회하는 모델
@@ -25,3 +45,4 @@ exports.getUserReviews = async (userId, page, size) => {
     return rows;
 };
 */
+

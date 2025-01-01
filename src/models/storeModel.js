@@ -2,21 +2,37 @@ import { getDB } from '../database/connection.js'
 
 // 매장 상세 정보 조회
 export const getStoreDetails = async (storeid) => {
-	const query = 'SELECT * FROM Stores WHERE store_id = ?'
-	const connection = await getDB()
-	const result1 = await connection.execute(query, [storeid])
+    //const query = 'SELECT * FROM Stores WHERE store_id = ?';
+    const query = `
+    SELECT 
+        s.store_id,
+        s.store_name,
+        s.address,
+        s.heart_count,
+        s.heart_status,
+        s.is_order_online,
+        sd.*
+    FROM Stores s
+    JOIN store_details sd ON s.store_id = sd.store_id
+    WHERE s.store_id = ?;
+`;
+    const connection = await getDB();
+    const result1 = await connection.execute(query, [storeid]);
 
-	return result1
-}
+    return result1;
+};
 
 // 매장 메뉴 정보 조회
 export const getStoreMenu = async (storeid) => {
-	const query = 'SELECT * FROM Menu WHERE store_id = ?'
-	const connection = await getDB()
-	const result2 = await connection.execute(query, [storeid])
+    const query = 'SELECT * FROM Menu WHERE store_id = ?';
+    const connection = await getDB();
+    //const result2 = await connection.execute(query, [storeid]);
+    const rows = await connection.execute(query, [storeid]);
 
-	return result2
-}
+    // store_id 필드 제거
+    const result2 = rows.map(({ store_id, ...rest }) => rest);
+    return result2;
+};
 
 // 매장 사진 정보 조회
 export const getStorePhotos = async (storeid, filter) => {
@@ -27,10 +43,13 @@ export const getStorePhotos = async (storeid, filter) => {
 		query += ' AND photo_category = ?'
 		params.push(filter)
 	}
+	if (filter) {
+		query += ' AND photo_category = ?'
+		params.push(filter)
+	}
 
 	const connection = await getDB()
 	const result3 = await connection.execute(query, params)
-
 	return result3
 }
 
@@ -51,15 +70,20 @@ export const getStoreReviews = async (storeid, sort) => {
             sr.store_id = ?
     `
 	const params = [storeid]
-
+    
+	if (sort === 'latest') {
+		query += ' ORDER BY sr.review_date DESC'
+	} else if (sort === 'most_liked') {
+		query += ' ORDER BY sr.review_heart DESC'
+	}
 	if (sort === 'latest') {
 		query += ' ORDER BY sr.review_date DESC'
 	} else if (sort === 'most_liked') {
 		query += ' ORDER BY sr.review_heart DESC'
 	}
 
-	const connection = await getDB()
-	const [result4] = await connection.execute(query, params)
+    const connection = await getDB();
+    const result4 = await connection.execute(query, params);
 
 	return result4
 }
