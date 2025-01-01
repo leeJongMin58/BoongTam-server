@@ -1,9 +1,12 @@
 import { Router } from 'express';
-import { getUserInfo } from '../controllers/mypageController.js';
+import { getUserInfo, updateUserInfo } from '../controllers/mypageController.js';
 
 const router = Router();
 
 // 사용자 정보 조회
 router.get('/info', getUserInfo);
+
+// 사용자 정보 수정
+router.patch('/info', updateUserInfo);
 
 export default router;

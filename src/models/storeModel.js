@@ -2,7 +2,20 @@ import { getDB } from '../database/connection.js';
 
 // 매장 상세 정보 조회
 export const getStoreDetails = async (storeid) => {
-    const query = 'SELECT * FROM Stores WHERE store_id = ?';
+    //const query = 'SELECT * FROM Stores WHERE store_id = ?';
+    const query = `
+    SELECT 
+        s.store_id,
+        s.store_name,
+        s.address,
+        s.heart_count,
+        s.heart_status,
+        s.is_order_online,
+        sd.*
+    FROM Stores s
+    JOIN store_details sd ON s.store_id = sd.store_id
+    WHERE s.store_id = ?;
+`;
     const connection = await getDB();
     const result1 = await connection.execute(query, [storeid]);
 
@@ -13,8 +26,11 @@ export const getStoreDetails = async (storeid) => {
 export const getStoreMenu = async (storeid) => {
     const query = 'SELECT * FROM Menu WHERE store_id = ?';
     const connection = await getDB();
-    const result2 = await connection.execute(query, [storeid]);
+    //const result2 = await connection.execute(query, [storeid]);
+    const rows = await connection.execute(query, [storeid]);
 
+    // store_id 필드 제거
+    const result2 = rows.map(({ store_id, ...rest }) => rest);
     return result2;
 };
 
@@ -59,7 +75,7 @@ export const getStoreReviews = async (storeid, sort) => {
     }
 
     const connection = await getDB();
-    const [result4] = await connection.execute(query, params);
+    const result4 = await connection.execute(query, params);
 
     return result4;
 };
