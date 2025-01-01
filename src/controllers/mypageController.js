@@ -24,20 +24,24 @@ export const getUserInfo = async (req, res) => {
             data: userInfo,
         });
     } catch (error) {
-        console.error('서버 오류:', error.message);
-        const status = error.status || 400;
-
-        if (status === 400) {
-            return res.status(400).json({
-                code: 400,
-                message: error.message || '잘못된 요청입니다.',
-                detail: error.detail || '토큰값이 올바르지 않습니다.',
-            });
-        }
+        /*
+        console.log('--에러를 json 형식으로 찍어볼 때 쓰는 코드--')
+        error.toJSON = function() {
+            return {
+                message: this.message,
+                name: this.name,
+                stack: this.stack,
+                customDetail: this.customDetail || 'No additional info'
+            };
+        };
     
-        res.status(status).json(errorCode[status] || {
-            code: status,
-            message: error.message || '서버 오류',
+        console.log('Error object in JSON format:', JSON.stringify(error, null, 2));*/
+        console.error('서버 오류:', error.message);
+        const status = error.status || 401;
+
+        res.status(status).json( {
+			...errorCode[401],
+			detail: "토큰값이 올바르지 않습니다",
         });
     }
     };
@@ -89,10 +93,11 @@ export const updateUserInfo = async (req, res) => {
         });
     } catch (error) {
         console.error('서버 오류:', error.message);
-        const status = error.status || 500;
-        res.status(status).json(errorCode[status] || {
-            code: status,
-            message: error.message || '서버 오류',
+        const status = error.status || 401;
+
+        res.status(status).json( {
+			...errorCode[401],
+			detail: "토큰값이 올바르지 않습니다",
         });
     }
 };
