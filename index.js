@@ -1,7 +1,10 @@
-import app from './src/app.js'
-import { connectDB } from './src/database/connection.js'
+import app from './src/app.js';
+import { connectDB } from './src/database/connection.js';
+import dotenv from 'dotenv';
 
-const PORT = 80
+dotenv.config(); // .env 파일 로드
+
+const PORT = process.env.PORT || 8080; // 환경 변수에서 포트 가져오기, 기본값 8080
 
 const startServer = async () => {
 	try {
