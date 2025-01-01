@@ -53,6 +53,8 @@ DB_PORT=3307          # MariaDB 포트 (기본 3306)
     - boong/store?
 
 
+# 12월 31일
+- 마이페이지 간단 수정 및 회원 정보 수정 api 추가
 
 > sql 수정 사항
 1. CREATE TABLE `photos` (
