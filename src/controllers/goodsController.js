@@ -1,5 +1,6 @@
 import * as goodsService from '../services/goodsService.js'
 import validateTokenAndUser from '../util/authUtils.js'
+import errorCode from '../util/error.js'
 
 const getGoods = async (req, res) => {
 	const { count = 10, page = 1 } = req.query
@@ -10,7 +11,6 @@ const getGoods = async (req, res) => {
 		const userId = await validateTokenAndUser(token)
 
 		const goods = await goodsService.fetchGoodsFromDB(count, pageNumber)
-		console.log('여기?')
 		res.json({
 			code: 200,
 			msg: '통신 성공',
@@ -19,15 +19,14 @@ const getGoods = async (req, res) => {
 			data: goods,
 		})
 	} catch (error) {
-		res.status(error.status || 500).json({
-			msg: error.message || '서버 오류',
-		})
+    const status = error.status || 500;
+    res.status(status).json(errorCode[status] || {
+        code: status,
+        message: error.message || '서버 오류',
+    });
 	}
 }
 
-export { getGoods }
-
-export {getGoods}
 
 //핫붕템
 const getHotitems = async (req, res) => {
@@ -49,9 +48,12 @@ const getHotitems = async (req, res) => {
       data: goods,
     });
   } catch (error) {
-    console.error('서버 오류:', error.message);
-    res.status(500).json({ msg: '서버 오류', error: error.message });
+    const status = error.status || 500;
+    res.status(status).json(errorCode[status] || {
+        code: status,
+        message: error.message || '서버 오류',
+    });
   }
 };
 
-export { getHotitems }
+export { getGoods, getHotitems };
