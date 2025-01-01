@@ -1,4 +1,4 @@
-import * as mp_service from '../models/mypageModel.js'
+import * as mypageService from '../models/mypageModel.js'
 import { fetchUserFromKakao } from '../services/mypageService.js'
 import errorCode from '../util/error.js'
 
@@ -16,7 +16,7 @@ export const getUserInfo = async (req, res) => {
 		const userid = await fetchUserFromKakao(token)
 
 		// DB에서 사용자 정보 가져오기
-		const userInfo = await mp_service.getUserInfo(userid)
+		const userInfo = await mypageService.getUserInfo(userid)
 
         res.status(200).json({
             code: 200,
@@ -74,15 +74,15 @@ export const updateUserInfo = async (req, res) => {
         const userid = await fetchUserFromKakao(token);
 
         // DB에서 기존 데이터 확인 (null 값 처리)
-        const existingUserInfo = await mp_service.getUserInfo(userid);
+        const existingUserInfo = await mypageService.getUserInfo(userid);
 
         let updatedUser;
         if (existingUserInfo[type] === null || existingUserInfo[type] === undefined) {
             // 값이 없으면 INSERT (새 값 추가)
-            updatedUser = await mp_service.insertUserInfo(userid, type, value);
+            updatedUser = await mypageService.insertUserInfo(userid, type, value);
         } else {
             // 값이 있으면 UPDATE (기존 값 수정)
-            updatedUser = await mp_service.updateUserInfo(userid, type, value);
+            updatedUser = await mypageService.updateUserInfo(userid, type, value);
         }
 
         // 바뀐 정보를 응답 본문에 추가
