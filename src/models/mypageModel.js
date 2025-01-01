@@ -15,7 +15,7 @@ export const getUserInfo = async (userid) => {
 export const updateUserInfo = async (userid, type, value) => {
     const query = `UPDATE users SET ${type} = ? WHERE id = ?`;
     const connection = await getDB();
-    const result = await connection.execute(query, [value, userid]);
+    //const result = await connection.execute(query, [value, userid]);
 
     // 수정된 값 반환
     return { [type]: value };  // 수정된 항목과 값 반환

@@ -11,6 +11,7 @@ export const getStoreDetails = async (storeid) => {
         s.heart_count,
         s.heart_status,
         s.is_order_online,
+        s.latitude, s.longitude,
         sd.*
     FROM Stores s
     JOIN store_details sd ON s.store_id = sd.store_id
@@ -73,7 +74,7 @@ export const getStoreReviews = async (storeid, sort) => {
     
 	if (sort === 'latest') {
 		query += ' ORDER BY sr.review_date DESC'
-	} else if (sort === 'most_liked') {
+	} else if (sort === 'popular') {
 		query += ' ORDER BY sr.review_heart DESC'
 	}
 
