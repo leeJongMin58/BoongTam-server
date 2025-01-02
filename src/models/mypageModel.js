@@ -11,6 +11,15 @@ export const getUserInfo = async (userid) => {
     return result[0];
 }
 
+// 1.5 사용자 토큰으로 정보 조회
+export const getUserByToken = async (token) => {
+    const query = 'SELECT id AS user_id, nickname, profile_picture, points FROM users WHERE token = ?';
+    const connection = await getDB();
+    const [result] = await connection.execute(query, [token]);
+    return result.length ? result[0] : null;
+};
+
+
 // 2. 사용자 정보 수정
 export const updateUserInfo = async (userid, type, value) => {
     const query = `UPDATE users SET ${type} = ? WHERE id = ?`;
