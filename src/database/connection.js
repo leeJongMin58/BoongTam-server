@@ -7,6 +7,7 @@ export const connectDB = async () => {
 	try {
 		db = await mysql.createConnection(SERVER_DB_CONFIG)
 		// db =  await mysql.createConnection(DB_CONFIG);
+
 		console.log('DB 연결 성공')
 	} catch (err) {
 		console.error('DB 연결 실패:', err)
