@@ -1,5 +1,5 @@
-import { Router } from 'express'
-import { getUserInfo } from '../controllers/mypageController.js'
+import { Router } from 'express';
+import { getUserInfo, updateUserInfo } from '../controllers/mypageController.js';
 
 const router = Router()
 
@@ -7,3 +7,6 @@ const router = Router()
 router.get('/info', getUserInfo)
 
 export default router
+
+// 사용자 정보 수정
+router.patch('/info', updateUserInfo);

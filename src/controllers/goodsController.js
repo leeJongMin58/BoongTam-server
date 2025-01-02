@@ -1,5 +1,6 @@
 import * as goodsService from '../services/goodsService.js'
 import validateTokenAndUser from '../util/authUtils.js'
+import errorCode from '../util/error.js'
 
 const getGoods = async (req, res) => {
 	const { count = 10, page = 1 } = req.query
@@ -10,7 +11,6 @@ const getGoods = async (req, res) => {
 		const userId = await validateTokenAndUser(token)
 
 		const goods = await goodsService.fetchGoodsFromDB(count, pageNumber)
-		console.log('여기?')
 		res.json({
 			code: 200,
 			msg: '통신 성공',
@@ -19,10 +19,41 @@ const getGoods = async (req, res) => {
 			data: goods,
 		})
 	} catch (error) {
-		res.status(error.status || 500).json({
-			msg: error.message || '서버 오류',
-		})
+    const status = error.status || 500;
+    res.status(status).json(errorCode[status] || {
+        code: status,
+        message: error.message || '서버 오류',
+    });
 	}
 }
 
-export { getGoods }
+
+//핫붕템
+const getHotitems = async (req, res) => {
+  const { count = 5} = req.query;
+  const token = req.headers.authorization;
+
+  try {
+    // 토큰검증
+    const userId = await validateTokenAndUser(token);
+
+    // DB에서 굿즈 정보 가져오기
+    const goods = await goodsService.fetchHotGoodsFromDB(count);
+
+    res.json({
+      code: 200,
+      msg: '통신 성공',
+      count: goods.length,
+      nextpage: goods.length === parseInt(count),
+      data: goods,
+    });
+  } catch (error) {
+    const status = error.status || 500;
+    res.status(status).json(errorCode[status] || {
+        code: status,
+        message: error.message || '서버 오류',
+    });
+  }
+};
+
+export { getGoods, getHotitems };
