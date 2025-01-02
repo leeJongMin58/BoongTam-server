@@ -57,12 +57,17 @@ const findByNicknameFromDB = async (nickname) => {
 	const db = await getDB()
 
 	try {
-		const query = `SELECT * FROM users WHERE nickname = ?`
+		// 1. 먼저 전체 데이터를 조회해보기
+		const allQuery = 'SELECT * FROM users'
+		const [allRows] = await db.execute(allQuery)
+		console.log('전체 데이터:', allRows)
 
-		// 쿼리 실행
+		// 2. 특정 닉네임 조회
+		const query = 'SELECT * FROM users WHERE nickname = ?'
 		const [rows] = await db.execute(query, [nickname])
+		console.log('검색할 닉네임:', nickname)
+		console.log('닉네임으로 조회한 결과:', rows)
 
-		// 닉네임이 존재하면 해당 데이터 반환, 없으면 null 반환
 		return rows.length > 0 ? rows[0] : null
 	} catch (error) {
 		console.error('DB 닉네임 검색 중 오류:', error.message)

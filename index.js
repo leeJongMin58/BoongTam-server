@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 // 환경 변수 로드
 dotenv.config()
 
-const PORT = 80 // env 파일의 PORT 값을 사용하고, 기본값으로 80 (aws port) 설정
+const PORT = 3003 // env 파일의 PORT 값을 사용하고, 기본값으로 80 (aws port) 설정
 
 const startServer = async () => {
 	try {

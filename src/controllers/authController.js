@@ -209,17 +209,18 @@ export async function quit(req, res) {
 //중복체크
 export async function nicknameCheck(req, res) {
 	const { nickname } = req.params
+
 	if (!nickname) {
 		return res.status(400).json(errorCode[400])
 	}
 	try {
 		const user = await findByNicknameFromDB(nickname)
-		if (!user) {
+		if (user) {
 			return res.status(409).json(errorCode[409])
 		}
 		return res.status(200).json({
 			code: 201,
-			msg: '닉네임 중복체크 성공',
+			msg: '사용가능한 닉네임입니다',
 			data: user,
 		})
 	} catch (error) {
