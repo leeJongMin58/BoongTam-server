@@ -7,6 +7,7 @@ dotenv.config();
 
 const PORT = process.env.SERVERP_DB_PORT || 80; // env 파일의 PORT 값을 사용하고, 기본값으로 80 (aws port) 설정
 
+
 const startServer = async () => {
 	try {
 		await connectDB() // DB 연결 초기화
