@@ -35,7 +35,7 @@ export const getNearbyStores = async (req, res) => {
 	// count가 숫자인지 확인
 	const storeCount = count && !isNaN(Number(count)) ? Number(count) : 5; // 기본값 5
 
-	// sort가 all 또는 rating인지 확인, 기본값은 'all' (가까운 거리 순)
+	// sort가 all 또는 popular인지 확인, 기본값은 'all' (가까운 거리 순)
 	const sortOrder = sort === 'popular' ? 'ORDER BY heart_count DESC' : 'ORDER BY distance ASC';
 
 	try {
