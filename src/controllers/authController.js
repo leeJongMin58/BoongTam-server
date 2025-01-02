@@ -1,5 +1,5 @@
 import { KAKAO_CONFIG } from '../config.js'
-import { saveUserToDB } from '../models/authModel.js'
+import { saveUserToDB, deleteUserFromDB } from '../models/authModel.js'
 import errorCode from '../util/error.js'
 
 const KAKAO_RESET_API = KAKAO_CONFIG.rest
@@ -93,6 +93,36 @@ async function getKakaoInfo(access_token, res) {
 	}
 }
 
+async function unlinkKakaoUser(access_token) {
+	const url = 'https://kapi.kakao.com/v1/user/unlink'
+
+	try {
+		const response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${access_token}`, // 액세스 토큰 추가
+				'Content-Type':
+					'application/x-www-form-urlencoded;charset=utf-8',
+			},
+		})
+
+		if (!response.ok) {
+			// API 호출 실패 시 에러 처리
+			const errorData = await response.json()
+			throw new Error(`카카오 사용자 연결 해제 실패: ${errorData.msg}`)
+		}
+
+		const data = await response.json() // 성공 응답 데이터
+		return data // 연결 해제 결과 반환
+	} catch (error) {
+		// 에러 로깅 및 재전달
+		console.error('카카오 사용자 연결 해제 중 오류:', error.message)
+		throw new Error('카카오 사용자 연결 해제 중 오류: ' + error.message)
+	}
+}
+
+export { unlinkKakaoUser }
+
 //회원가입
 export async function signUp(req, res) {
 	const { code, nickname, email, address1, address2 } = req.body
@@ -142,6 +172,38 @@ export async function signUp(req, res) {
 				address2,
 				token: tokenData.access_token,
 			},
+		})
+	} catch (error) {
+		return res.status(500).json(errorCode[500])
+	}
+}
+
+//회원 탈퇴
+export async function quit(req, res) {
+	const { code } = req.body
+
+	console.log(`삭제할 코드: ${code}`)
+
+	if (!code) {
+		return res.status(404).json(errorCode[404])
+	}
+	try {
+		const tokenData = await getKakaoToken(req, res)
+		if (!tokenData) {
+			return res.status(404).json(errorCode[404])
+		}
+		const myInfo = await getKakaoInfo(tokenData.access_token, res)
+
+		const deleteResult = await deleteUserFromDB(myInfo.id)
+		if (!deleteResult.success) {
+			return res.status(404).json(errorCode[404])
+		}
+
+		await unlinkKakaoUser(tokenData.access_token)
+
+		return res.status(201).json({
+			code: 201,
+			msg: '회원탈퇴성공',
 		})
 	} catch (error) {
 		return res.status(500).json(errorCode[500])
