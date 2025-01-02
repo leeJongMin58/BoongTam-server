@@ -11,15 +11,24 @@ export const getStoreDetails = async (storeid) => {
         s.heart_count,
         s.heart_status,
         s.is_order_online,
+        s.latitude, s.longitude,
         sd.*
     FROM Stores s
     JOIN store_details sd ON s.store_id = sd.store_id
     WHERE s.store_id = ?;
 `;
     const connection = await getDB();
-    const result1 = await connection.execute(query, [storeid]);
+    const [rows] = await connection.execute(query, [storeid]);
 
-    return result1;
+    //return result1;
+    // 변환: is_order_online 값이 0이면 false, 1이면 true
+    const formattedRows = rows.map(row => ({
+        ...row,
+        is_order_online: row.is_order_online === 1,
+        heart_status: row.heart_status === 1,
+    }));
+
+    return formattedRows;
 };
 
 // 매장 메뉴 정보 조회
@@ -73,7 +82,7 @@ export const getStoreReviews = async (storeid, sort) => {
     
 	if (sort === 'latest') {
 		query += ' ORDER BY sr.review_date DESC'
-	} else if (sort === 'most_liked') {
+	} else if (sort === 'popular') {
 		query += ' ORDER BY sr.review_heart DESC'
 	}
 
