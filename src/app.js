@@ -4,19 +4,6 @@ import mypageRoutes from './routes/mypageRoutes.js'
 import authRoutes from './routes/authRoutes.js'
 import goodsRoutes from './routes/goodsRoutes.js'
 
-/*
-import express from 'express';
-import boongRoutes from './routes/boongRoutes.js';
-import mypageRoutes from './routes/mypageRoutes.js';
-import authRoutes from './routes/authRoutes.js';
-import goodsRoutes from './routes/goodsRoutes.js';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import cors from 'cors';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);*/
-
 //login html
 const app = express()
 

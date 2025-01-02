@@ -59,13 +59,16 @@ DB_PORT=3307          # MariaDB 포트 (기본 3306)
 # 1월 1일
 authUtil 및 다른 model에 errorcode 통합 적용
 
+# 1월 2일
+AWS 클라우드 DB로 연동
+메인, 맵 API 대폭 수정
 
 > sql 수정 사항
 1. CREATE TABLE `photos` (
     `photo_id` int NOT NULL AUTO_INCREMENT,
     `store_id` int NOT NULL,
     `photo_url` varchar(255) NOT NULL,
-    `photo_category` enum('inner', 'outer', 'menu') NOT NULL,
+    `photo_category` enum('inner', 'outer', 'menu') NOT NULL, #여기 수정 영어로
     PRIMARY KEY (`photo_id`),
     KEY `store_id` (`store_id`),
     CONSTRAINT `photos_ibfk_1` FOREIGN KEY (`store_id`) REFERENCES `stores` (`store_id`)
@@ -77,7 +80,7 @@ authUtil 및 다른 model에 errorcode 통합 적용
     `user_id` bigint(20) NOT NULL,
     `review_text` text DEFAULT NULL,
     `review_rating` int(11) DEFAULT NULL,
-    `review_date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    `review_date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(), #TIMESTAMP로 변경
     `review_heart` int(11) DEFAULT 0,
     `store_review_photo_url` varchar(255) NOT NULL,
     PRIMARY KEY (`store_review_id`),
@@ -86,3 +89,6 @@ authUtil 및 다른 model에 errorcode 통합 적용
     CONSTRAINT `store_reviews_ibfk_1` FOREIGN KEY (`store_id`) REFERENCES `stores` (`store_id`),
     CONSTRAINT `store_reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) 
+
+
+3. goods_orders 테이블 DROP
