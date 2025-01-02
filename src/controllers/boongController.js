@@ -5,6 +5,7 @@ import {
 	getStorePhotos,
 	getStoreReviews,
 } from '../models/storeModel.js'
+import errorCode from '../util/error.js'
 
 export const getNearbyStores = async (req, res) => {
 	// 요청 바디에서 좌표 값 추출
@@ -27,8 +28,8 @@ export const getNearbyStores = async (req, res) => {
 		isNaN(parseFloat(lng_rd))
 	) {
 		return res.status(400).json({
-			code: 400,
-			message: '잘못된 요청입니다. 모든 좌표를 올바른 형식으로 입력해주세요.',
+			...errorCode[400],
+			detail: '모든 좌표를 올바른 형식으로 입력해주세요.',
 		});
 	}
 	// count가 숫자인지 확인
@@ -59,15 +60,13 @@ export const getNearbyStores = async (req, res) => {
 		});
 	} catch (error) {
 		console.error('컨트롤러 오류:', error);
-		res.status(500).json({
-			code: 500,
-			message: '서버 오류가 발생했습니다.',
-		});
+		res.status(500).json(
+			errorCode[500]
+		);
 	}
 };
 
 export const getStoreInfo = async (req, res) => {
-	//const { storeid, tab = 'detail', sort, filter } = req.query;
 
 	const { store_id } = req.params;  // store_id는 URL 파라미터로 받음
 	const { tab, sort, filter } = req.query;  // tab은 기본값 'menu'로 설정
@@ -75,8 +74,8 @@ export const getStoreInfo = async (req, res) => {
 	// storeid가 없는 경우 처리
 	if (!store_id) {
 		return res.status(400).json({
-			code: 400,
-			message: 'storeid는 필수입니다.',
+			...errorCode[400],
+			detail: 'storeid는 필수입니다.',
 		});
 	}
 
@@ -104,8 +103,8 @@ export const getStoreInfo = async (req, res) => {
 		} else {
 			// 잘못된 tab 값 처리
 			return res.status(400).json({
-				code: 400,
-				message: '잘못된 tab 값입니다. 유효한 값은 menu, photo, reviews 입니다.',
+				...errorCode[400],
+				detail: '잘못된 tab 값입니다. 유효한 값은 menu, photo, reviews 입니다.',
 			});
 		}
 		
@@ -118,8 +117,8 @@ export const getStoreInfo = async (req, res) => {
 		});
 	} catch (error) {
 		res.status(500).json({
-			code: 500,
-			message: `서버 오류: ${error.message}`,
+			...errorCode[500],
+			detail: `서버 오류: ${error.message}`,
 		});
 	}
 };

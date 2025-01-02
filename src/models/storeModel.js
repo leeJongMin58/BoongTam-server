@@ -18,9 +18,17 @@ export const getStoreDetails = async (storeid) => {
     WHERE s.store_id = ?;
 `;
     const connection = await getDB();
-    const result1 = await connection.execute(query, [storeid]);
+    const [rows] = await connection.execute(query, [storeid]);
 
-    return result1;
+    //return result1;
+    // 변환: is_order_online 값이 0이면 false, 1이면 true
+    const formattedRows = rows.map(row => ({
+        ...row,
+        is_order_online: row.is_order_online === 1,
+        heart_status: row.heart_status === 1,
+    }));
+
+    return formattedRows;
 };
 
 // 매장 메뉴 정보 조회

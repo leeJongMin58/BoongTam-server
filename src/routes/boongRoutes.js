@@ -8,6 +8,6 @@ const router = Router()
 router.get('/', getNearbyStores)
 
 // 매장 정보 요청
-router.get('/store/:store_id', getStoreInfo)
+router.get('/store/:store_id?', getStoreInfo)
 
 export default router
