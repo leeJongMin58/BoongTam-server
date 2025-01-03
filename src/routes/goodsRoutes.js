@@ -6,6 +6,10 @@ const router = Router()
 router.get('/', GoodsController.getGoods)
 //인기 굿즈 
 router.get('/hotitems',GoodsController.getHotitems)
-
-
-export default router;
+//장바구니
+router.get("/cart", GoodsController.cart)
+//장바구니 담기
+router.post("/cart", GoodsController.addCart)
+//장바구니 삭제
+router.delete("/cart", GoodsController.removeFromCart)
+export default router
