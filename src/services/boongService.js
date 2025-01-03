@@ -7,6 +7,8 @@ export const fetchNearbyStores = async (
 	lng_lu,
 	lat_rd,
 	lng_rd,
+	count = 5, // 기본값 5
+	sortOrder = 'ORDER BY distance ASC'
 ) => {
 	try {
 		const query = `
@@ -21,13 +23,12 @@ export const fetchNearbyStores = async (
                     COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + 
                     SIN(RADIANS(?)) * SIN(RADIANS(latitude))
                 )) AS distance
-            FROM Stores
+            FROM stores # 소문자로 해야 클라우드 db 실행됨
             WHERE 
                 latitude BETWEEN ? AND ? AND 
                 longitude BETWEEN ? AND ?
-            ORDER BY 
-                distance ASC
-            LIMIT 5;
+			${sortOrder}
+            LIMIT ?;
         `
 
 		const parameters = [
@@ -38,15 +39,16 @@ export const fetchNearbyStores = async (
 			lat_lu, // 위도 범위
 			lng_rd,
 			lng_lu, // 경도 범위
+			Number(count), // 불러올 매장 수
 		]
 
-		console.log('실행할 쿼리 및 파라미터:', query)
+		//console.log('실행할 쿼리 및 파라미터:', query)
 		console.log('파라미터:', parameters)
 
 		const db = getDB()
 		if (!db) throw new Error('DB가 초기화되지 않았습니다.')
 
-		const rows = await db.query(query, parameters)
+		const [rows] = await db.query(query, parameters)
 
 		if (rows && Array.isArray(rows)) {
 			rows.forEach((row) => {

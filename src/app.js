@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes.js'
 import goodsRoutes from './routes/goodsRoutes.js'
 import cors from 'cors'
 
+//login html
 const app = express()
 app.use(cors())
 
@@ -28,5 +29,8 @@ app.use('/user', mypageRoutes)
 app.get('/test', (req, res) => {
 	res.json({ test: 'success' })
 })
+
+// 로그인_테스트용
+// app.use(express.static(path.join(__dirname, 'public')));
 
 export default app

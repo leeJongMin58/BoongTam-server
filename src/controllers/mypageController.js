@@ -13,10 +13,13 @@ export const getUserInfo = async (req, res) => {
 
 	try {
 		// 카카오 API에서 사용자 ID 가져오기
-		const userid = await fetchUserFromKakao(token)
+		// const userid = await fetchUserFromKakao(token)
 
 		// DB에서 사용자 정보 가져오기
-		const userInfo = await mypageService.getUserInfo(userid)
+		// const userInfo = await mypageService.getUserInfo(userid)
+
+        // DB에서 사용자 정보 가져오기 (토큰 비교)
+        const userInfo = await mypageService.getUserByToken(token);
 
         res.status(200).json({
             code: 200,
@@ -71,20 +74,41 @@ export const updateUserInfo = async (req, res) => {
 
     try {
         // 카카오 API에서 사용자 ID 가져오기
-        const userid = await fetchUserFromKakao(token);
+        // const userid = await fetchUserFromKakao(token);
 
         // DB에서 기존 데이터 확인 (null 값 처리)
-        const existingUserInfo = await mypageService.getUserInfo(userid);
+        // const existingUserInfo = await mypageService.getUserInfo(userid);
+
+        const userInfo = await mypageService.getUserByToken(token);
+
+        if (!userInfo) {
+            return res.status(401).json({
+                ...errorCode[401],
+                detail: "유효하지 않은 토큰입니다.",
+            });
+        }
+
+        const userid = userInfo.user_id; // 사용자 ID 가져오기
 
         let updatedUser;
+        /*
+        // kakao 인증 시 필요한 코드
         if (existingUserInfo[type] === null || existingUserInfo[type] === undefined) {
             // 값이 없으면 INSERT (새 값 추가)
             updatedUser = await mypageService.insertUserInfo(userid, type, value);
         } else {
             // 값이 있으면 UPDATE (기존 값 수정)
             updatedUser = await mypageService.updateUserInfo(userid, type, value);
-        }
+        }*/
 
+        if (userInfo[type] === null || userInfo[type] === undefined) {
+            // 값이 없으면 INSERT (새 값 추가)
+            updatedUser = await mypageService.insertUserInfo(userid, type, value);
+        } else {
+            // 값이 있으면 UPDATE (기존 값 수정)
+            updatedUser = await mypageService.updateUserInfo(userid, type, value);
+        }
+        
         // 바뀐 정보를 응답 본문에 추가
         res.status(200).json({
             code: 200,
