@@ -24,6 +24,11 @@ export const getUserInfo = async (userId) => {
     return await mypageModel.getUserInfo(userId);
 };
 
+// DB에서 토큰으로 사용자 정보 가져오기
+export const getUserByToken = async (token) => {
+    return await mypageModel.getUserByToken(token);
+};
+
 // 사용자 정보 수정
 export const updateUserInfo = async (userId, type, value) => {
     try {

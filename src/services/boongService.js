@@ -23,7 +23,7 @@ export const fetchNearbyStores = async (
                     COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + 
                     SIN(RADIANS(?)) * SIN(RADIANS(latitude))
                 )) AS distance
-            FROM Stores
+            FROM stores # 소문자로 해야 클라우드 db 실행됨
             WHERE 
                 latitude BETWEEN ? AND ? AND 
                 longitude BETWEEN ? AND ?

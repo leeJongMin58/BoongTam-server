@@ -13,7 +13,7 @@ export const getStoreDetails = async (storeid) => {
         s.is_order_online,
         s.latitude, s.longitude,
         sd.*
-    FROM Stores s
+    FROM stores s # 소문자  
     JOIN store_details sd ON s.store_id = sd.store_id
     WHERE s.store_id = ?;
 `;
@@ -33,7 +33,7 @@ export const getStoreDetails = async (storeid) => {
 
 // 매장 메뉴 정보 조회
 export const getStoreMenu = async (storeid) => {
-    const query = 'SELECT * FROM Menu WHERE store_id = ?';
+    const query = 'SELECT * FROM menu WHERE store_id = ?';
     const connection = await getDB();
     //const result2 = await connection.execute(query, [storeid]);
     const rows = await connection.execute(query, [storeid]);
@@ -45,7 +45,7 @@ export const getStoreMenu = async (storeid) => {
 
 // 매장 사진 정보 조회
 export const getStorePhotos = async (storeid, filter) => {
-	let query = 'SELECT * FROM Photos WHERE store_id = ?'
+	let query = 'SELECT * FROM photos WHERE store_id = ?'
 	const params = [storeid]
 
 	if (filter) {
@@ -70,7 +70,7 @@ export const getStoreReviews = async (storeid, sort) => {
             sr.*,
             u.nickname
         FROM 
-            Store_reviews sr
+            store_reviews sr
         JOIN 
             users u
         ON 
