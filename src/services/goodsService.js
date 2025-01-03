@@ -17,10 +17,10 @@ export const fetchUserFromKakao = async (token) => {
 	return data.id // 사용자 ID 반환
 }
 //일반 붕템 가져오기
-export const fetchGoodsFromDB = async (count, pageNumber) => {
-  return await getGoodsFromDB(count, pageNumber);
+export const fetchGoodsFromDB = async (count, pageNumber,category,subcategory) => {
+  return await getGoodsFromDB(count, pageNumber,category,subcategory);
 };
-
+//핫붕템 가져오기
 export const fetchHotGoodsFromDB = async (count) =>{
   return await getHotGoodsFromDB (count)
 }

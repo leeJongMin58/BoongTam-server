@@ -1,5 +1,9 @@
 import { KAKAO_CONFIG } from '../config.js'
-import { saveUserToDB, deleteUserFromDB } from '../models/authModel.js'
+import {
+	saveUserToDB,
+	deleteUserFromDB,
+	findByNicknameFromDB,
+} from '../models/authModel.js'
 import errorCode from '../util/error.js'
 
 const KAKAO_RESET_API = KAKAO_CONFIG.rest
@@ -150,13 +154,6 @@ export async function signUp(req, res) {
 				address2,
 				tokenData.access_token,
 			)
-
-			if (
-				!saveResult.success &&
-				saveResult.code === 'DUPLICATE_NICKNAME'
-			) {
-				return res.status(409).json(errorCode[409])
-			}
 		} catch (err) {
 			return res.status(500).json(errorCode[500])
 		}
@@ -204,6 +201,27 @@ export async function quit(req, res) {
 		return res.status(201).json({
 			code: 201,
 			msg: '회원탈퇴성공',
+		})
+	} catch (error) {
+		return res.status(500).json(errorCode[500])
+	}
+}
+//중복체크
+export async function nicknameCheck(req, res) {
+	const { nickname } = req.params
+
+	if (!nickname) {
+		return res.status(400).json(errorCode[400])
+	}
+	try {
+		const user = await findByNicknameFromDB(nickname)
+		if (user) {
+			return res.status(409).json(errorCode[409])
+		}
+		return res.status(200).json({
+			code: 201,
+			msg: '사용가능한 닉네임입니다',
+			data: user,
 		})
 	} catch (error) {
 		return res.status(500).json(errorCode[500])

@@ -5,6 +5,7 @@ import { SERVER_DB_CONFIG } from '../config.js'
 let db
 export const connectDB = async () => {
 	try {
+
 		db = await mysql.createConnection(SERVER_DB_CONFIG)
 		// db =  await mysql.createConnection(DB_CONFIG);
 

@@ -25,12 +25,6 @@ const saveUserToDB = async (id, nickname, email, address1, address2) => {
 		// 결과 반환
 		return result
 	} catch (error) {
-		if (
-			error.code == 'ER_DUP_ENTRY' &&
-			error.message.includes('nickname')
-		) {
-			return res.status(409).json(errorCode[409])
-		}
 		throw new Error('DB 저장 중 오류: ' + error.message)
 	}
 }
@@ -57,3 +51,27 @@ const deleteUserFromDB = async (id) => {
 }
 
 export { deleteUserFromDB }
+
+//중복체크
+const findByNicknameFromDB = async (nickname) => {
+	const db = await getDB()
+
+	try {
+		// 1. 먼저 전체 데이터를 조회해보기
+		const allQuery = 'SELECT * FROM users'
+		const [allRows] = await db.execute(allQuery)
+		console.log('전체 데이터:', allRows)
+
+		// 2. 특정 닉네임 조회
+		const query = 'SELECT * FROM users WHERE nickname = ?'
+		const [rows] = await db.execute(query, [nickname])
+		console.log('검색할 닉네임:', nickname)
+		console.log('닉네임으로 조회한 결과:', rows)
+
+		return rows.length > 0 ? rows[0] : null
+	} catch (error) {
+		console.error('DB 닉네임 검색 중 오류:', error.message)
+		throw new Error('닉네임 검색 실패: ' + error.message)
+	}
+}
+export { findByNicknameFromDB }
