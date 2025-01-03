@@ -46,3 +46,85 @@ export const getHotGoodsFromDB = async (count) => {
 	const result = await connection.query(query, limit)
 	return result[0]
 }
+//장바구니 가져오기
+export const getCartFromDB = async (userId, count, pageNumber) => {
+	const limit = parseInt(count)
+	const offset = (parseInt(pageNumber) - 1) * limit
+	const query = `
+		SELECT 
+			c.cart_id,
+			c.quantity,
+			c.added_at,
+			g.goods_id,
+			g.goods_name,
+			g.goods_price,
+			g.image_url as goods_image_url
+		FROM 
+			cart c
+			JOIN goods g ON c.goods_id = g.goods_id
+		WHERE 
+			c.user_id = ?
+		LIMIT ? OFFSET ?;
+	`
+
+	try {
+		const connection = getDB();
+		const [results] = await connection.query(query, [userId, limit, offset]);
+		return results;
+	} catch (err) {
+		console.error("DB 쿼리 오류:", err);
+		throw err
+	}
+}
+//장바구니 담기
+export const addCartToDB = async (userId, goodsId, quantity) => {
+	const db = getDB();
+
+	const query = `
+			INSERT INTO cart (user_id, goods_id, quantity)
+			VALUES (?, ?, ?)
+			ON DUPLICATE KEY UPDATE
+				quantity = quantity + VALUES(quantity); 
+	`;
+	const values = [userId, goodsId, quantity];
+
+	try {
+		// 첫 번째 쿼리 실행
+		const [result] = await db.query(query, values);
+
+		if (result.affectedRows > 0) {
+			// JOIN을 사용하여 cart와 goods 테이블의 정보를 함께 가져옴
+			const productQuery = `
+				SELECT g.goods_id, g.goods_name, g.image_url, g.goods_price
+				FROM cart c
+				JOIN goods g ON c.goods_id = g.goods_id
+				WHERE c.user_id = ? AND c.goods_id = ?;
+			`;
+			// 두 번째 쿼리 실행
+			const [product] = await db.query(productQuery, [userId, goodsId]);
+
+			return product[0]; // 첫 번째 상품 정보 반환
+		} else {
+			return null; // 실패 시 null 반환
+		}
+	} catch (error) {
+		console.error("DB 쿼리 오류:", error);
+		throw error; // 에러 발생 시 throw
+	}
+}
+//장바구니 삭제
+export const removeFromCartDB = async (userId, cartId) => {
+	const query = `
+		DELETE FROM cart 
+		WHERE cart_id = ? AND user_id = ?;
+	`
+
+	try {
+		const connection = getDB();
+		const [result] = await connection.query(query, [cartId, userId]);
+		return result.affectedRows > 0;
+	} catch (error) {
+		console.error("DB 쿼리 오류:", error);
+		throw error
+	}
+}

@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { getGoodsFromDB, getHotGoodsFromDB } from '../models/goodsModel.js';
+import * as goodsModel from '../models/goodsModel.js';
 
 export const fetchUserFromKakao = async (token) => {
 	const response = await fetch('https://kapi.kakao.com/v2/user/me', {
@@ -18,9 +18,21 @@ export const fetchUserFromKakao = async (token) => {
 }
 //일반 붕템 가져오기
 export const fetchGoodsFromDB = async (count, pageNumber,category,subcategory) => {
-  return await getGoodsFromDB(count, pageNumber,category,subcategory);
+  return await goodsModel.getGoodsFromDB(count, pageNumber,category,subcategory);
 };
 //핫붕템 가져오기
 export const fetchHotGoodsFromDB = async (count) =>{
-  return await getHotGoodsFromDB (count)
+  return await goodsModel.getHotGoodsFromDB (count)
+}
+//장바구니 가져오기
+export const fetchCartFromDB = async (userId, count, pageNumber) => {
+  return await goodsModel.getCartFromDB(userId, count, pageNumber)
+}
+//장바구니 담기
+export const fetchAddCartFromDB = async (userId, goodsId, quantity) => {
+  return await goodsModel.addCartToDB(userId, goodsId, quantity)
+}
+//장바구니 삭제
+export const fetchRemoveFromCartFromDB = async (userId, cartId) => {
+  return await goodsModel.removeFromCartDB(userId, cartId)
 }
