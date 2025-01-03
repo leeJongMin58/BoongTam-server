@@ -24,13 +24,13 @@ export const getUserByToken = async (token) => {
 export const updateUserInfo = async (userid, type, value) => {
     const query = `UPDATE users SET ${type} = ? WHERE id = ?`;
     const connection = await getDB();
-    //const result = await connection.execute(query, [value, userid]);
+    const result = await connection.execute(query, [value, userid]);
 
     // 수정된 값 반환
     return { [type]: value };  // 수정된 항목과 값 반환
 };
 
-// 사용자 정보 추가 (INSERT)
+// 3. 사용자 정보 추가 (INSERT)
 export const insertUserInfo = async (userid, type, value) => {
     const query = `UPDATE users SET ${type} = ? WHERE id = ?`;
     const connection = await getDB();
@@ -40,18 +40,126 @@ export const insertUserInfo = async (userid, type, value) => {
     return { [type]: value };  // 추가된 항목과 값 반환
 };
 
-/*
-// 사용자가 작성한 리뷰를 조회하는 모델
-exports.getUserReviews = async (userId, page, size) => {
-    const offset = (page - 1) * size;
-    const query = `
-        SELECT id AS review_id, content, rating, created_at
-        FROM reviews
-        WHERE user_id = ?
-        LIMIT ? OFFSET ?
-    `;
-    const [rows] = await db.execute(query, [userId, size, offset]);
-    return rows;
-};
-*/
+// 4. 사용자 리뷰 관리
+// 전체 리뷰 조회
+export const findReviewsByTab = async (userId, tab) => {
+    let query;
+    if (tab === 'goods') {
+        query = `
+            SELECT *
+            FROM goods_reviews
+            WHERE user_id = ?
+        `;
+    } else if (tab === 'store') {
+        query = `
+            SELECT *
+            FROM store_reviews
+            WHERE user_id = ?
+        `;
+    } else {
+        throw new Error('유효하지 않은 tab 값입니다.');
+    }
 
+    try {
+        const connection = await getDB();
+        const [rows] = await connection.execute(query, [userId]);
+        return rows;
+    } catch (error) {
+        console.error('DB 조회 오류:', error.message);
+        throw new Error('전체 리뷰 조회 중 오류가 발생했습니다.');
+    }
+};
+
+export const findReviewById = async (userId, tab, reviewId) => {
+    let query, params;
+
+    if (tab === 'goods') {
+        query = `
+            SELECT *
+            FROM goods_reviews
+            WHERE user_id = ? AND goods_review_id = ?
+        `;
+        params = [userId, reviewId];
+    } else if (tab === 'store') {
+        query = `
+            SELECT *
+            FROM store_reviews
+            WHERE user_id = ? AND store_review_id = ?
+        `;
+        params = [userId, reviewId];
+    } else {
+        throw new Error('유효하지 않은 tab 값입니다.');
+    }
+
+    try {
+        const connection = await getDB();
+        const [rows] = await connection.execute(query, params);
+        return rows[0] || null;
+    } catch (error) {
+        console.error('DB 조회 오류:', error.message);
+        throw new Error('특정 리뷰 조회 중 오류가 발생했습니다.');
+    }
+};
+
+
+// 리뷰 수정
+export const updateReviewById = async (userId, tab, reviewId, review_text, rating) => {
+    let query, params;
+
+    if (tab === 'goods') {
+        query = `
+            UPDATE goods_reviews
+            SET review_text = ?, goods_rating = ?, modified_date = CURRENT_TIMESTAMP
+            WHERE user_id = ? AND goods_review_id = ?
+        `;
+        params = [review_text, rating, userId, reviewId];
+    } else if (tab === 'store') {
+        query = `
+            UPDATE store_reviews
+            SET review_text = ?, review_rating = ?, modified_date = CURRENT_TIMESTAMP
+            WHERE user_id = ? AND store_review_id = ?
+        `;
+        params = [review_text, rating, userId, reviewId];
+    } else {
+        throw new Error('유효하지 않은 tab 값입니다.');
+    }
+
+    try {
+        const connection = await getDB();
+        const [result] = await connection.execute(query, params);
+        return result.affectedRows > 0;
+    } catch (error) {
+        console.error('DB 수정 오류:', error.message);
+        throw new Error('리뷰 수정 중 오류가 발생했습니다.');
+    }
+};
+
+// 리뷰 삭제
+export const deleteReviewById = async (userId, tab, reviewId) => {
+    let query, params;
+
+    if (tab === 'goods') {
+        query = `
+            DELETE FROM goods_reviews
+            WHERE user_id = ? AND goods_review_id = ?
+        `;
+        params = [userId, reviewId];
+    } else if (tab === 'store') {
+        query = `
+            DELETE FROM store_reviews
+            WHERE user_id = ? AND store_review_id = ?
+        `;
+        params = [userId, reviewId];
+    } else {
+        throw new Error('유효하지 않은 tab 값입니다.');
+    }
+
+    try {
+        const connection = await getDB();
+        const [result] = await connection.execute(query, params);
+        return result.affectedRows > 0;
+    } catch (error) {
+        console.error('DB 삭제 오류:', error.message);
+        throw new Error('리뷰 삭제 중 오류가 발생했습니다.');
+    }
+};

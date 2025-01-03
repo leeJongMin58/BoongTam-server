@@ -19,7 +19,7 @@ export const fetchUserFromKakao = async (token) => {
 }
 
 
-// DB에서 사용자 정보 가져오기
+// DB에서 사용자 정보 가져오기 (일단 안 씀)
 export const getUserInfo = async (userId) => {
     return await mypageModel.getUserInfo(userId);
 };
@@ -38,4 +38,25 @@ export const updateUserInfo = async (userId, type, value) => {
     } catch (error) {
         throw new Error('사용자 정보 수정 실패: ' + error.message);
     }
+};
+
+
+// 사용자 리뷰 불러오기 (tab에 따라)
+export const getReviewsByTab = async (userId, tab) => {
+    return await mypageModel.findReviewsByTab(userId, tab);
+};
+// 사용자 리뷰 불러오기 (리뷰 id에 따라)
+export const getReviewById = async (userId, tab, reviewId) => {
+    return await mypageModel.findReviewById(userId, tab, reviewId);
+};
+
+
+// 리뷰 수정
+export const updateReview = async (userId, tab, reviewId, review_text, rating) => {
+    return await mypageModel.updateReviewById(userId, tab, reviewId, review_text, rating);
+};
+
+// 리뷰 삭제
+export const deleteReview = async (userId, tab, reviewId) => {
+    return await mypageModel.deleteReviewById(userId, tab, reviewId);
 };
