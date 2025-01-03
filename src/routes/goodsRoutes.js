@@ -1,8 +1,11 @@
 import { Router } from "express";
-import { getGoods, getHotitems } from '../controllers/goodsController.js';
+import * as GoodsController from '../controllers/goodsController.js';
 
 const router = Router()
+//굿즈 
+router.get('/', GoodsController.getGoods)
+//인기 굿즈 
+router.get('/hotitems',GoodsController.getHotitems)
 
-router.get('/', getGoods)
-router.get('/hotitems',getHotitems)
+
 export default router;
