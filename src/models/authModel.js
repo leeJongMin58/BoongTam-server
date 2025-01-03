@@ -6,6 +6,7 @@ const saveUserToDB = async (id, nickname, email, address1, address2) => {
 	const query = `
         INSERT INTO users (id, nickname, email, address1, address2, token)
         VALUES (?, ?, ?, ?, ?, ?)
+		ON DUPLICATE KEY UPDATE
         nickname = VALUES(nickname),
         email = VALUES(email),
         address1 = VALUES(address1),
