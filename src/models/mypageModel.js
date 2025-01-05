@@ -63,7 +63,19 @@ export const findReviewsByTab = async (userId, tab) => {
     try {
         const connection = await getDB();
         const [rows] = await connection.execute(query, [userId]);
-        return rows;
+                // store_review_photo_url 필드를 배열로 변환
+        const processedRows = rows.map(row => {
+            return {
+                ...row,
+                store_review_photo_url: row.store_review_photo_url
+                    ? row.store_review_photo_url.split(',').map(photo => photo.trim()) // 쉼표로 분리하여 배열로 변환, 공백 처리
+                    : []
+            };
+        });
+
+        console.log("processedRows: ", processedRows);
+        return processedRows;
+        //return rows;
     } catch (error) {
         console.error('DB 조회 오류:', error.message);
         throw new Error('전체 리뷰 조회 중 오류가 발생했습니다.');

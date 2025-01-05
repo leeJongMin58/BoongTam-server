@@ -158,8 +158,8 @@ export const getUserReview = async (req, res) => {
             reviews = await mypageModel.findReviewById(user.user_id, tab, reviewId);
             if (!reviews) {
                 return res.status(404).json({
-                    code: 404,
-                    message: '해당 리뷰를 찾을 수 없습니다.',
+                    ...errorCode[404],
+                    detail: '해당 리뷰를 찾을 수 없습니다.',
                 });
             }
         } else {
@@ -174,10 +174,7 @@ export const getUserReview = async (req, res) => {
         });
     } catch (error) {
         console.error('리뷰 조회 오류:', error.message);
-        res.status(500).json({
-            code: 500,
-            message: '서버 내부 오류가 발생했습니다.',
-        });
+        res.status(500).json(errorCode[500]);
     }
 };
 
@@ -211,8 +208,8 @@ export const updateUserReview = async (req, res) => {
 
         if (!result) {
             return res.status(404).json({
-                code: 404,
-                message: '수정할 리뷰를 찾을 수 없습니다.',
+                ...errorCode[404],
+                detail: '수정할 리뷰를 찾을 수 없습니다.',
             });
         }
 
@@ -222,10 +219,7 @@ export const updateUserReview = async (req, res) => {
         });
     } catch (error) {
         console.error('리뷰 수정 오류:', error.message);
-        res.status(500).json({
-            code: 500,
-            message: '서버 내부 오류가 발생했습니다.',
-        });
+        res.status(500).json({...errorCode[500], detail: error.message});
     }
 };
 
@@ -258,8 +252,8 @@ export const deleteUserReview = async (req, res) => {
 
         if (!result) {
             return res.status(404).json({
-                code: 404,
-                message: '삭제할 리뷰를 찾을 수 없습니다.',
+                ...errorCode[404],
+                detail: '삭제할 리뷰를 찾을 수 없습니다.',
             });
         }
 
@@ -269,9 +263,6 @@ export const deleteUserReview = async (req, res) => {
         });
     } catch (error) {
         console.error('리뷰 삭제 오류:', error.message);
-        res.status(500).json({
-            code: 500,
-            message: '서버 내부 오류가 발생했습니다.',
-        });
+        res.status(500).json(errorCode[500]);
     }
 };
