@@ -51,7 +51,7 @@ const testvalidateTokenAndUser = async (token) => {
 
 		if (rows.length === 0) {
 			throw {
-				code: 401,
+				...errorCode[401], // 이부분 수정(1월 6일)
 				detail: '유효하지 않은 토큰입니다. 다시 로그인해주세요.',
 			}
 		}
