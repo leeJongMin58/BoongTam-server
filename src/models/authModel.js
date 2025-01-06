@@ -82,7 +82,7 @@ const findUserByKakaoIdFromDB = async (kakao_id) => {
 	const db = await getDB()
 	try {
 		const [rows] = await db.query(
-			'SELECT * FROM users WHERE kakao_id = ?',
+			'SELECT * FROM users WHERE id = ?',
 			[kakao_id]
 		);
 		
