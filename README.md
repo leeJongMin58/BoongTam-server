@@ -1,8 +1,6 @@
 # **BoongTam-server**
 
 ### 12.16 first commit_gitignore
-### 12.16 first commit_gitignore
-
 ### 12.17 db연동 및 테스트 완료
 ### 12.18 환경 변수 설정을 .env 파일로 분리하여 데이터베이스 연결 정보 관리
 ### 12.18 환경 변수 설정을 .env 파일로 분리하여 데이터베이스 연결 정보 관리
@@ -30,17 +28,15 @@ DB_PORT=3307          # MariaDB 포트 (기본 3306)
 3. src/database.sql 에서 하나씩 ▷RUN 실행
 
 ### 12월 23일 map api 실제 작동 방식으로 수정
-### 12월 23일 map api 실제 작동 방식으로 수정
 - DB에 가상의 매장 15개 생성
     1) 엔드포인트로 받아온 (query형식의) 좌표값을 활용하여 화면 안에 있는 매장들 추린 후
     2) 현재 위치에서 가장 가까운 5개의 매장 뽑아올 수 있게 하였습니다
 
 ### 12월 26일 map api 및 기타 파일 수정
-### 12월 26일 map api 및 기타 파일 수정
 - 시원 님과 db 호출 방식 통일
 - test용으로 만들었던 api 삭제
 - map -> boong으로 이름 변경
-  >> {{base}}boong?lat=37.501&lng=127.035&lat_lu=37.5015&lng_lu=127.0355&lat_rd=37.500000&lng_rd=127.0345 
+  > {{base}}boong?lat=37.501&lng=127.035&lat_lu=37.5015&lng_lu=127.0355&lat_rd=37.500000&lng_rd=127.0345 
   이로 인해 URL 변경
 
 
