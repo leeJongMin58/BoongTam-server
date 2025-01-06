@@ -3,6 +3,8 @@ import {
 	saveUserToDB,
 	deleteUserFromDB,
 	findByNicknameFromDB,
+	findUserByKakaoIdFromDB,
+	updateUserTokensFromDB,
 } from '../models/authModel.js'
 import errorCode from '../util/error.js'
 
@@ -20,24 +22,35 @@ export async function requestKakaoLogin(req, res) {
 		const tokenData = await getKakaoToken(req, res)
 		const myInfo = await getKakaoInfo(tokenData.access_token, res)
 
-		await saveUserToDB(
-			myInfo.id,
-			myInfo.kakao_account.profile.nickname,
-			tokenData.access_token,
-		).catch((err) => res.status(501).json(errorCode[500]))
+		const existingUser = await findUserByKakaoIdFromDB(myInfo.id)
 
-		return res.status(201).json({
-			code: 201,
-			msg: '카카오 로그인 성공',
-			data: {
-				user_id: myInfo.id,
-				nickname: myInfo.kakao_account.profile.nickname,
-				token: tokenData.access_token,
-			},
-		})
-	} catch (error) {
-		return res.status(500).json(errorCode[500])
-	}
+		if (!existingUser) {
+            // 회원가입이 필요한 경우
+            return res.status(403).json({
+                code: 403,
+                msg: '회원가입이 필요합니다',
+                data: {
+                    user_id: myInfo.id,
+                    nickname: myInfo.kakao_account.profile.nickname
+                }
+            })
+        }
+
+        // 기존 회원 로그인 처리
+        await updateUserTokensFromDB(myInfo.id, tokenData)
+        return res.status(200).json({
+            code: 200,
+            msg: '로그인 성공',
+            data: {
+                user_id: myInfo.id,
+                nickname: existingUser.nickname,
+                token: tokenData.access_token,
+            }
+        })
+
+    } catch (error) {
+        return res.status(500).json(errorCode[500])
+    }
 }
 
 async function getKakaoToken(req, res) {

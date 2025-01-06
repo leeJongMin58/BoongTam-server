@@ -137,4 +137,32 @@ const removeFromCart = async (req, res) => {
 		res.status(500).json(errorCode[500])
 	}
 }
-export { getGoods, getHotitems ,cart,addCart,removeFromCart}
+
+//구매내역
+// const purchaseHistory = async (req, res) => {
+// 	const token = req.headers.authorization
+
+// 	try {
+// 		const userId = await testvalidateTokenAndUser(token)
+// 		console.log(userId)
+
+// 		const result = await goodsService.fetchPurchaseHistoryFromDB(userId);
+
+//     if (result) {
+//       return res.json({
+//         code: 200,
+//         msg: "구매 내역 조회 성공",
+//         history: result.history,
+//       });
+//     } else {
+//       return res
+//         .status(400)
+//         .json((errorCode[400]));
+//     }
+// 	} catch (error) {
+// 		console.error("서버 오류:", error.message)
+// 		res.status(500).json(errorCode[500])
+// 	}
+// }
+
+ export { getGoods, getHotitems ,cart,addCart,removeFromCart}

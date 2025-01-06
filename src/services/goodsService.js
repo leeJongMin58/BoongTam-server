@@ -36,3 +36,7 @@ export const fetchAddCartFromDB = async (userId, goodsId, quantity) => {
 export const fetchRemoveFromCartFromDB = async (userId, cartId) => {
   return await goodsModel.removeFromCartDB(userId, cartId)
 }
+//구매내역 가져오기
+// export const fetchPurchaseHistoryFromDB = async (userId) => {
+//   return await goodsModel.fetchPurchaseHistory(userId)
+// }

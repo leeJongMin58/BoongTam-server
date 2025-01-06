@@ -76,3 +76,45 @@ const findByNicknameFromDB = async (nickname) => {
 	}
 }
 export { findByNicknameFromDB }
+
+//카카오 아이디로 조회
+const findUserByKakaoIdFromDB = async (kakao_id) => {
+	const db = await getDB()
+	try {
+		const [rows] = await db.query(
+			'SELECT * FROM users WHERE kakao_id = ?',
+			[kakao_id]
+		);
+		
+		return rows[0] || null;
+		
+	} catch (error) {
+		console.error('카카오 ID로 사용자 검색 실패:', error);
+		throw error;
+	}
+}
+
+export { findUserByKakaoIdFromDB }
+
+const updateUserTokensFromDB = async (kakao_id, tokenData) => {
+    const db = await getDB()
+    try {
+        const [result] = await db.query(
+            'UPDATE users SET token = ? WHERE id = ?',
+            [tokenData.access_token, kakao_id]
+        );
+        
+        // 업데이트된 행이 있는지 확인
+        if (result.affectedRows === 0) {
+            throw new Error('사용자를 찾을 수 없습니다');
+        }
+        
+        return result;
+        
+    } catch (error) {
+        console.error('토큰 업데이트 실패:', error);
+        throw error;
+    }
+}
+
+export { updateUserTokensFromDB };
