@@ -18,3 +18,11 @@ export const getGoodsReviews = async (sort, count) => {
         throw new Error('리뷰 데이터를 가져오는 데 실패했습니다: ' + error.message);
     }
 };
+
+export const getStoreReviews= async (sort, count) => {
+    try {
+        return await communityReviewModel.findStoreReviews(sort, count);
+    } catch (error) {
+        throw new Error('리뷰 데이터를 가져오는 데 실패했습니다: ' + error.message);
+    }
+};

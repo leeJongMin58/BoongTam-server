@@ -2,6 +2,7 @@ import * as communityReviewService from '../services/communityReviewService.js';
 import testvalidateTokenAndUser from '../util/authUtils.js'
 import errorCode from '../util/error.js'
 
+// 매장 리뷰 작성
 export const createStoreReview = async (req, res) => {
     const token = req.headers.authorization;
     const { store_id, review_text, review_rating, review_photos } = req.body;
@@ -38,7 +39,7 @@ export const createStoreReview = async (req, res) => {
     }
 };
 
-
+// 굿즈 리뷰 작성
 export const createGoodsReview = async (req, res) => {
     const token = req.headers.authorization;
     const { goods_id, review_text, review_rating, review_photos } = req.body;
@@ -77,6 +78,33 @@ export const createGoodsReview = async (req, res) => {
     }
 };
 
+// 매장 리뷰 조회
+export const getStoreReviews = async (req, res) => {
+    const token = req.headers.authorization;  // 토큰을 요청 헤더에서 추출
+
+    // 토큰이 없을 경우 오류 응답
+    if (!token) {
+        return res.status(400).json({ ...errorCode[400], detail: '토큰값을 확인해주세요.' });
+    }
+    const userId = await testvalidateTokenAndUser(token);
+    console.log(userId); // 필요한 경우 로그 출력
+
+    const { sort = 'latest', count = 5 } = req.query;
+
+    try {
+        const reviews = await communityReviewService.getStoreReviews(sort, count);
+        res.status(200).json({
+            code: 200,
+            msg: '리뷰 조회 성공',
+            count: reviews.length,
+            data: reviews,
+        });
+    } catch (error) {
+        console.error('리뷰 조회 오류:', error.message);
+        res.status(error.code || 500).json({ code: error.code || 500, message:error.message, detail: error.detail || '매장 리뷰 조회 중 오류가 발생했습니다.' });
+    }
+};
+
 // 굿즈 리뷰 조회
 export const getGoodsReviews = async (req, res) => {
     const token = req.headers.authorization;  // 토큰을 요청 헤더에서 추출
@@ -87,7 +115,7 @@ export const getGoodsReviews = async (req, res) => {
     }
     const userId = await testvalidateTokenAndUser(token);
     console.log(userId); // 필요한 경우 로그 출력
-    
+
     const { sort = 'latest', count = 5 } = req.query;
 
     try {
@@ -100,11 +128,7 @@ export const getGoodsReviews = async (req, res) => {
         });
     } catch (error) {
         console.error('리뷰 조회 오류:', error.message);
-        // res.status(500).json({
-        //     code: 500,
-        //     message: '리뷰 조회 중 서버 오류가 발생했습니다.',
-        //     detail: error.message,
-        // });
-        res.status(error.code || 500).json({ code: error.code || 500, message:error.message, detail: error.detail || '상품 리뷰 작성 중 오류가 발생했습니다.' });
+        res.status(error.code || 500).json({ code: error.code || 500, message:error.message, detail: error.detail || '굿즈 리뷰 조회 중 오류가 발생했습니다.' });
     }
 };
+    
