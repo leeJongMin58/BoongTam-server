@@ -99,3 +99,17 @@ ADD COLUMN `modified_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CU
 
 ALTER TABLE `store_reviews`
 ADD COLUMN `modified_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+5. 리뷰에 누르는 하트 테이블 추가
+CREATE TABLE `review_likes` (
+    `like_id` INT NOT NULL AUTO_INCREMENT,
+    `review_type` ENUM('goods', 'store') NOT NULL, -- 리뷰 유형을 구분
+    `review_id` INT NOT NULL, -- 리뷰 ID (goods_review_id 또는 store_review_id)
+    `user_id` BIGINT NOT NULL,
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`like_id`),
+    UNIQUE KEY `unique_user_review` (`review_type`, `review_id`, `user_id`), -- 중복 방지
+    KEY `review_id` (`review_id`),
+    KEY `user_id` (`user_id`),
+    CONSTRAINT `review_likes_ibfk_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
