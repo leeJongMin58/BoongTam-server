@@ -63,6 +63,9 @@ authUtil 및 다른 model에 errorcode 통합 적용
 AWS 클라우드 DB로 연동
 메인, 맵 API 대폭 수정
 
+### 1월 7일
+커뮤니티-매장 및 굿즈 리뷰 보기 (인기순, 최신순으로 개수 지정해 나열 가능) api 추가
+
 > sql 수정 사항
 1. CREATE TABLE `photos` (
     `photo_id` int NOT NULL AUTO_INCREMENT,
