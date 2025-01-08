@@ -63,6 +63,9 @@ authUtil 및 다른 model에 errorcode 통합 적용
 AWS 클라우드 DB로 연동
 메인, 맵 API 대폭 수정
 
+### 1월 8일
+리뷰에 대한 좋아요 (하트) 토글 기능 추가 - 머지 후 라우터 조금 더 손봐야 함
+
 > sql 수정 사항
 1. CREATE TABLE `photos` (
     `photo_id` int NOT NULL AUTO_INCREMENT,
