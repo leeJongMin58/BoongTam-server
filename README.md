@@ -99,3 +99,29 @@ ADD COLUMN `modified_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CU
 
 ALTER TABLE `store_reviews`
 ADD COLUMN `modified_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+
+7. 리뷰 좋아요 테이블 분리
+- 데이터 무결성을 위해 매장 리뷰 좋아요 테이블과 굿즈 리뷰 좋아요 테이블로 분리
+
+CREATE TABLE `store_review_likes` (
+    `like_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `store_review_id` INT(11) NOT NULL,
+    `user_id` BIGINT(20) NOT NULL,
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    PRIMARY KEY (`like_id`),
+    UNIQUE KEY `unique_user_review` (`store_review_id`, `user_id`),
+    FOREIGN KEY (`store_review_id`) REFERENCES `store_reviews` (`store_review_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `goods_review_likes` (
+    `like_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `goods_review_id` INT(11) NOT NULL,
+    `user_id` BIGINT(20) NOT NULL,
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    PRIMARY KEY (`like_id`),
+    UNIQUE KEY `unique_user_review` (`goods_review_id`, `user_id`),
+    FOREIGN KEY (`goods_review_id`) REFERENCES `goods_reviews` (`goods_review_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
