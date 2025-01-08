@@ -30,4 +30,86 @@ export const createGoodsReview = async (goodsId, userId, reviewText, reviewRatin
 };
 
 
+// 굿즈 리뷰 조회
+export const findGoodsReviews = async (sort = 'latest', count = 5) => {
+    const sortColumn = sort === 'popular' ? 'like_count' : 'gr.review_date';
+    const query = `
+        SELECT 
+            gr.goods_review_id, 
+            gr.goods_id,
+            gr.goods_rating,
+            gr.review_text, 
+            SUBSTRING_INDEX(gr.goods_review_photo_url, ',', 1) AS review_first_image_url,
+            gr.review_date,
+            u.id AS user_id,
+            u.nickname,
+            u.profile_picture,
+            COUNT(rl.like_id) AS like_count
+        FROM goods_reviews gr
+        JOIN users u ON gr.user_id = u.id
+        LEFT JOIN review_likes rl 
+            ON rl.review_type = 'goods' AND rl.review_id = gr.goods_review_id
+        GROUP BY gr.goods_review_id
+        ORDER BY ${sortColumn} DESC
+        LIMIT ?
+    `;
 
+    const connection = await getDB();
+    const [rows] = await connection.execute(query, [count]);
+    return rows.map(row => ({
+        goods_review_id: row.goods_review_id,
+        goods_id: row.goods_id,
+        review_text: row.review_text,
+        goods_rating: row.goods_rating,
+        review_first_image_url: row.review_first_image_url,
+        review_date: row.review_date,
+        like_count: row.like_count, // 하트 개수 추가
+        user_simple_info: {
+            user_id: row.user_id,
+            nickname: row.nickname,
+            profile_picture: row.profile_picture,
+        },
+    }));
+};
+
+// 매장 리뷰 조회
+export const findStoreReviews = async (sort = 'latest', count = 5) => {
+    const sortColumn = sort === 'popular' ? 'like_count' : 'sr.review_date';
+    const query = `
+        SELECT 
+            sr.store_review_id, 
+            sr.store_id,
+            sr.review_rating,
+            sr.review_text, 
+            SUBSTRING_INDEX(sr.store_review_photo_url, ',', 1) AS review_first_image_url,
+            sr.review_date,
+            u.id AS user_id,
+            u.nickname,
+            u.profile_picture,
+            COUNT(rl.like_id) AS like_count
+        FROM store_reviews sr
+        JOIN users u ON sr.user_id = u.id
+        LEFT JOIN review_likes rl 
+            ON rl.review_type = 'store' AND rl.review_id = sr.store_review_id
+        GROUP BY sr.store_review_id
+        ORDER BY ${sortColumn} DESC
+        LIMIT ?
+    `;
+
+    const connection = await getDB();
+    const [rows] = await connection.execute(query, [count]);
+    return rows.map(row => ({
+        store_review_id: row.store_review_id,
+        store_id: row.store_id,
+        review_text: row.review_text,
+        review_rating: row.review_rating,
+        review_first_image_url: row.review_first_image_url,
+        review_date: row.review_date,
+        like_count: row.like_count, // 하트 개수 추가
+        user_simple_info: {
+            user_id: row.user_id,
+            nickname: row.nickname,
+            profile_picture: row.profile_picture,
+        },
+    }));
+};
