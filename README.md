@@ -95,3 +95,12 @@ AWS 클라우드 DB로 연동
 
 
 3. goods_orders 테이블 DROP
+
+
+6. store_details 테이블 alter
+- appearance_time열은 사용 x, nullable로 바꿈
+- 가게 여는 시간과 닫는 시간을 각각 저장하는 TIME 타입 컬럼 추가
+
+ALTER TABLE `store_details`
+ADD COLUMN `open_hour` TIME NOT NULL AFTER `appearance_time`,
+ADD COLUMN `close_hour` TIME NOT NULL AFTER `open_hour`;
