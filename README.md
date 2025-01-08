@@ -96,6 +96,12 @@ AWS 클라우드 DB로 연동
 
 3. goods_orders 테이블 DROP
 
+4. store_reviews, goods_reviews 에 modified_date 추가
+ALTER TABLE `goods_reviews`
+ADD COLUMN `modified_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+ALTER TABLE `store_reviews`
+ADD COLUMN `modified_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 
 6. store_details 테이블 alter
 - appearance_time열은 사용 x, nullable로 바꿈
