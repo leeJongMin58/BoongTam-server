@@ -139,30 +139,38 @@ const removeFromCart = async (req, res) => {
 }
 
 //구매내역
-// const purchaseHistory = async (req, res) => {
-// 	const token = req.headers.authorization
+const purchaseHistory = async (req, res) => {
+	const token = req.headers.authorization
 
-// 	try {
-// 		const userId = await testvalidateTokenAndUser(token)
-// 		console.log(userId)
+	try {
+		const userId = await testvalidateTokenAndUser(token)
+		const result = await goodsService.fetchPurchaseHistoryFromDB(userId);
+		
+		if (result) {
+			// 단일 객체인 경우 배열로 변환
+			const resultArray = Array.isArray(result) ? result : [result];
+			
+			// 결과 데이터 가공
+			const formattedHistory = resultArray.map(item => ({
+				purchase_date: item.purchase_date,
+				total_amount: item.total_amount,
+				status: item.status,
+				goods_info: item.goods_info // JSON 문자열을 객체로 변환
+			}));
 
-// 		const result = await goodsService.fetchPurchaseHistoryFromDB(userId);
+			return res.json({
+				code: 200,
+				msg: "구매 내역 조회 성공",
+				history: formattedHistory
+			});
+		} else {
+			console.log('구매내역 조회 실패')
+			return res.status(400).json(errorCode[400]);
+		}
+	} catch (error) {
+		console.error("서버 오류:", error.message)
+		res.status(500).json(errorCode[500])
+	}
+}
 
-//     if (result) {
-//       return res.json({
-//         code: 200,
-//         msg: "구매 내역 조회 성공",
-//         history: result.history,
-//       });
-//     } else {
-//       return res
-//         .status(400)
-//         .json((errorCode[400]));
-//     }
-// 	} catch (error) {
-// 		console.error("서버 오류:", error.message)
-// 		res.status(500).json(errorCode[500])
-// 	}
-// }
-
- export { getGoods, getHotitems ,cart,addCart,removeFromCart}
+ export { getGoods, getHotitems ,cart,addCart,removeFromCart,purchaseHistory}

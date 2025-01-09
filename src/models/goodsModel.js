@@ -129,42 +129,43 @@ export const removeFromCartDB = async (userId, cartId) => {
 	}
 }
 //구매내역 가져오기
-// export const fetchPurchaseHistory = async (userId) => {
-// 	const db = getDB()
-
-// 	try {
-// 		const query = `
-// 		  SELECT 
-// 			DATE(ph.purchase_date) AS purchase_date, 
-// 				SUM(ph.quantity * g.goods_price) AS total_amount, 
-// 				ph.status,
-// 				JSON_ARRAYAGG(
-// 				  JSON_OBJECT(
-// 					'goods_name', g.goods_name,
-// 					'image_url', g.image_url
-// 				  )
-// 				) AS goods_info
-// 		  FROM purchase_history ph
-// 		  JOIN goods g ON ph.goods_id = g.goods_id
-// 		  WHERE ph.user_id = ?
-// 		  GROUP BY DATE(ph.purchase_date), ph.status
-// 		  ORDER BY DATE(ph.purchase_date) DESC;
-// 		`;
-
-// 		db.query(query, [userId], (error, rows) => {
-// 			if (error) {
-// 				console.error("구매 내역 조회 오류:", error);
-// 				throw error;
-// 			}
+export const fetchPurchaseHistory = async (userId) => {
+	//const db = getDB()
+	const connection = getDB();
+	try {
+		const query = `
+		  SELECT 
+			DATE(ph.purchase_date) AS purchase_date, 
+				SUM(ph.quantity * g.goods_price) AS total_amount, 
+				ph.status,
+				JSON_ARRAYAGG(
+				  JSON_OBJECT(
+					'goods_name', g.goods_name,
+					'image_url', g.image_url
+				  )
+				) AS goods_info
+		  FROM purchase_history ph
+		  JOIN goods g ON ph.goods_id = g.goods_id
+		  WHERE ph.user_id = ?
+		  GROUP BY DATE(ph.purchase_date), ph.status
+		  ORDER BY DATE(ph.purchase_date) DESC;
+		`;
+		const [result] = await connection.query(query, [userId]);
+		return result
+		// db.query(query, [userId], (error, rows) => {
+		// 	if (error) {
+		// 		console.error("구매 내역 조회 오류:", error);
+		// 		throw error;
+		// 	}
 			
-// 			if (rows.length > 0) {
-// 				return { success: true, history: rows };
-// 			} else {
-// 				return { success: false, message: "구매 내역이 없습니다." };
-// 			}
-// 		});
-// 	} catch (error) {
-// 		console.error("구매 내역 조회 오류:", error);
-// 		throw error;
-// 	}
-// }
+		// 	if (rows.length > 0) {
+		// 		return { success: true, history: rows };
+		// 	} else {
+		// 		return { success: false, message: "구매 내역이 없습니다." };
+		// 	}
+		// });
+	} catch (error) {
+		console.error("구매 내역 조회 오류:", error);
+		throw error;
+	}
+}

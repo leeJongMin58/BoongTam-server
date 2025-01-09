@@ -13,6 +13,6 @@ router.post("/cart", GoodsController.addCart)
 //장바구니 삭제
 router.delete("/cart", GoodsController.removeFromCart)
 // 구매내역 
-// router.get("/purchase-history", GoodsController.purchaseHistory)
+router.get("/purchase-history", GoodsController.purchaseHistory)
 
 export default router
