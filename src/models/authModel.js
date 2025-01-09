@@ -1,16 +1,17 @@
 import { getDB } from '../database/connection.js' // DB 연결 함수 가져오기
 import errorCode from '../util/error.js'
 
-const saveUserToDB = async (id, nickname, email, address1, address2) => {
+const saveUserToDB = async (id, nickname, email, address1, address2,kakaotoken,token) => {
 	const db = await getDB() // DB 연결 가져오기
 	const query = `
-        INSERT INTO users (id, nickname, email, address1, address2, token)
+        INSERT INTO users (id, nickname, email, address1, address2, kakao_token, server_Token)
         VALUES (?, ?, ?, ?, ?, ?)
 		ON DUPLICATE KEY UPDATE
         nickname = VALUES(nickname),
         email = VALUES(email),
         address1 = VALUES(address1),
         address2 = VALUES(address2),
+        kakao_token = VALUES(kakao_token),
         token = VALUES(token);
     `
 	try {
@@ -20,6 +21,7 @@ const saveUserToDB = async (id, nickname, email, address1, address2) => {
 			email,
 			address1,
 			address2,
+			kakaotoken,
 			token,
 		])
 
@@ -96,12 +98,12 @@ const findUserByKakaoIdFromDB = async (kakao_id) => {
 
 export { findUserByKakaoIdFromDB }
 
-const updateUserTokensFromDB = async (kakao_id, tokenData) => {
+const updateUserTokensFromDB = async (kakao_id, token, kakaoToken) => {
     const db = await getDB()
     try {
         const [result] = await db.query(
-            'UPDATE users SET token = ? WHERE id = ?',
-            [tokenData.access_token, kakao_id]
+            'UPDATE users SET token = ?, kakao_token = ? WHERE id = ?',
+            [token, kakaoToken, kakao_id]
         );
         
         // 업데이트된 행이 있는지 확인

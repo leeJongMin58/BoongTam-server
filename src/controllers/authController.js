@@ -7,6 +7,7 @@ import {
 	updateUserTokensFromDB,
 } from '../models/authModel.js'
 import errorCode from '../util/error.js'
+import { generateToken } from '../util/token.js'
 
 const KAKAO_RESET_API = KAKAO_CONFIG.rest
 const REDIRECT_URI = KAKAO_CONFIG.redirect_url
@@ -17,6 +18,7 @@ export async function requestKakaoLogin(req, res) {
 	if (!req.body.code) {
 		return res.status(400).json(errorCode[400])
 	}
+	console.log('로그인 시도 ')
 
 	try {
 		const tokenData = await getKakaoToken(req, res)
@@ -26,8 +28,8 @@ export async function requestKakaoLogin(req, res) {
 
 		if (!existingUser) {
             // 회원가입이 필요한 경우
-            return res.status(403).json({
-                code: 403,
+            return res.status(200).json({
+                code: 200,
                 msg: '회원가입이 필요합니다',
                 data: {
                     user_id: myInfo.id,
@@ -37,14 +39,20 @@ export async function requestKakaoLogin(req, res) {
         }
 
         // 기존 회원 로그인 처리
-        await updateUserTokensFromDB(myInfo.id, tokenData)
-        return res.status(200).json({
-            code: 200,
+		const token = generateToken(myInfo.id)
+        await updateUserTokensFromDB(
+            myInfo.id, 
+            token,
+            tokenData.access_token  // 카카오 토큰
+        )
+        return res.status(201).json({
+            code: 201,
             msg: '로그인 성공',
             data: {
                 user_id: myInfo.id,
                 nickname: existingUser.nickname,
-                token: tokenData.access_token,
+                kakao_token: tokenData.access_token,
+				server_token: token
             }
         })
 
@@ -73,6 +81,7 @@ async function getKakaoToken(req, res) {
 		})
 
 		const token = await response.json()
+		console.log(token)
 		if (token.error == 'invalid_grant') {
 			return res.status(401).json(errorCode[401])
 		}
@@ -159,6 +168,7 @@ export async function signUp(req, res) {
 		const myInfo = await getKakaoInfo(tokenData.access_token, res)
 
 		try {
+			const token = generateToken(myInfo.id)
 			const saveResult = await saveUserToDB(
 				myInfo.id,
 				myInfo.kakao_account.profile.nickname,
@@ -166,6 +176,7 @@ export async function signUp(req, res) {
 				address1,
 				address2,
 				tokenData.access_token,
+				token
 			)
 		} catch (err) {
 			return res.status(500).json(errorCode[500])
@@ -180,7 +191,8 @@ export async function signUp(req, res) {
 				email,
 				address1,
 				address2,
-				token: tokenData.access_token,
+				kakao_token: tokenData.access_token,
+				server_token: token
 			},
 		})
 	} catch (error) {
