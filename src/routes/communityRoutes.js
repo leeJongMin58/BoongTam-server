@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createStoreReview, createGoodsReview, getStoreReviews, getGoodsReviews } from '../controllers/communityReviewController.js';
+import { createStoreReview, createGoodsReview, getStoreReviews, getGoodsReviews, getGoodsReviewDetail, getStoreReviewDetail } from '../controllers/communityReviewController.js';
 import { createStoreReport } from '../controllers/communityStoreReportController.js'
 import { ReviewLikeController } from '../controllers/reviewLikeController.js'
 
@@ -23,5 +23,11 @@ router.get('/sre', getStoreReviews);
 
 // 굿즈 리뷰 조회
 router.get('/gre', getGoodsReviews);
+
+// 굿즈 리뷰 상세 조회
+router.get('/gre/detail', getGoodsReviewDetail);
+
+// 굿즈 리뷰 상세 조회
+router.get('/sre/detail', getStoreReviewDetail);
 
 export default router

@@ -71,6 +71,7 @@ AWS 클라우드 DB로 연동
 ### 1월 8일
 리뷰에 대한 좋아요 (하트) 토글 기능 추가 - 머지 후 라우터 조금 더 손봐야 함
 
+
 --------------------------
 
 
@@ -156,5 +157,64 @@ CREATE TABLE `goods_review_likes` (
     UNIQUE KEY `unique_user_review` (`goods_review_id`, `user_id`),
     FOREIGN KEY (`goods_review_id`) REFERENCES `goods_reviews` (`goods_review_id`) ON DELETE CASCADE,
     FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+8. goods_reviews_comments 테이블과 goods_reviews_comments_likes 테이블 추가
+
+CREATE TABLE `goods_reviews_comments` (
+    `comment_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `goods_review_id` INT(11) NOT NULL,
+    `user_id` BIGINT(20) NOT NULL,
+    `comment_text` TEXT NOT NULL,
+    `comment_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`comment_id`),
+    KEY `goods_review_id` (`goods_review_id`),
+    KEY `user_id` (`user_id`),
+    CONSTRAINT `goods_reviews_comments_fk_1` FOREIGN KEY (`goods_review_id`) REFERENCES `goods_reviews` (`goods_review_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `goods_reviews_comments_fk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE `goods_reviews_comments_likes` (
+    `like_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `comment_id` INT(11) NOT NULL,
+    `user_id` BIGINT(20) NOT NULL,
+    `like_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`like_id`),
+    UNIQUE KEY `unique_like` (`comment_id`, `user_id`),
+    KEY `comment_id` (`comment_id`),
+    KEY `user_id` (`user_id`),
+    CONSTRAINT `goods_reviews_comments_likes_fk_1` FOREIGN KEY (`comment_id`) REFERENCES `goods_reviews_comments` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `goods_reviews_comments_likes_fk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+9. 
+CREATE TABLE `store_review_comments` (
+    `comment_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `store_review_id` INT(11) NOT NULL,
+    `user_id` BIGINT(20) NOT NULL,
+    `comment_text` TEXT NOT NULL,
+    `comment_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`comment_id`),
+    KEY `store_review_id` (`store_review_id`),
+    KEY `user_id` (`user_id`),
+    CONSTRAINT `store_review_comments_fk_1` FOREIGN KEY (`store_review_id`) REFERENCES `store_reviews` (`store_review_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `store_review_comments_fk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE `store_reviews_comments_likes` (
+    `like_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `comment_id` INT(11) NOT NULL,
+    `user_id` BIGINT(20) NOT NULL,
+    `like_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`like_id`),
+    UNIQUE KEY `unique_like` (`comment_id`, `user_id`),
+    KEY `comment_id` (`comment_id`),
+    KEY `user_id` (`user_id`),
+    CONSTRAINT `store_reviews_comments_likes_fk_1` FOREIGN KEY (`comment_id`) REFERENCES `store_review_comments` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `store_reviews_comments_likes_fk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
