@@ -68,7 +68,11 @@ AWS 클라우드 DB로 연동
 ### 1월 7일
 커뮤니티-매장 및 굿즈 리뷰 보기 (인기순, 최신순으로 개수 지정해 나열 가능) api 추가
 
+### 1월 8일
+리뷰에 대한 좋아요 (하트) 토글 기능 추가 - 머지 후 라우터 조금 더 손봐야 함
+
 --------------------------
+
 
 > sql 수정 사항
 1. CREATE TABLE `photos` (
@@ -128,3 +132,29 @@ CREATE TABLE `review_likes` (
 ALTER TABLE `store_details`
 ADD COLUMN `open_hour` TIME NOT NULL AFTER `appearance_time`,
 ADD COLUMN `close_hour` TIME NOT NULL AFTER `open_hour`;
+
+7. 리뷰 좋아요 테이블 분리
+- 데이터 무결성을 위해 매장 리뷰 좋아요 테이블과 굿즈 리뷰 좋아요 테이블로 분리
+
+CREATE TABLE `store_review_likes` (
+    `like_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `store_review_id` INT(11) NOT NULL,
+    `user_id` BIGINT(20) NOT NULL,
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    PRIMARY KEY (`like_id`),
+    UNIQUE KEY `unique_user_review` (`store_review_id`, `user_id`),
+    FOREIGN KEY (`store_review_id`) REFERENCES `store_reviews` (`store_review_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `goods_review_likes` (
+    `like_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `goods_review_id` INT(11) NOT NULL,
+    `user_id` BIGINT(20) NOT NULL,
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    PRIMARY KEY (`like_id`),
+    UNIQUE KEY `unique_user_review` (`goods_review_id`, `user_id`),
+    FOREIGN KEY (`goods_review_id`) REFERENCES `goods_reviews` (`goods_review_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+

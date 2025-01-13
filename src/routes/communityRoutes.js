@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { createStoreReview, createGoodsReview, getStoreReviews, getGoodsReviews } from '../controllers/communityReviewController.js';
-
 import { createStoreReport } from '../controllers/communityStoreReportController.js'
+import { ReviewLikeController } from '../controllers/reviewLikeController.js'
+
 
 const router = Router()
 
@@ -13,6 +14,9 @@ router.post('/store/review', createStoreReview)
 
 // 굿즈 리뷰 작성
 router.post('/goods/review', createGoodsReview)
+
+// 하트 토글
+router.patch('/re/like', ReviewLikeController.updateLikeStatus);
 
 // 매장 리뷰 조회
 router.get('/sre', getStoreReviews);
