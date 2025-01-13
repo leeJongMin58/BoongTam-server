@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { getUserInfo, updateUserInfo, getUserReview, updateUserReview, deleteUserReview } from '../controllers/mypageController.js';
+import { getOrders } from '../controllers/boongOrderController.js'
 
 const router = Router()
 
@@ -21,5 +22,7 @@ router.put('/reviews/:tab/:reviewId', updateUserReview);
 
 // 리뷰 삭제
 router.delete('/reviews/:tab/:reviewId', deleteUserReview);
+
+router.get('/order', getOrders);
 
 export default router

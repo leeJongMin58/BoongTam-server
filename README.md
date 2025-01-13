@@ -218,3 +218,29 @@ CREATE TABLE `store_reviews_comments_likes` (
     CONSTRAINT `store_reviews_comments_likes_fk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+10. 붕어빵 주문내역 테이블 추가
+- boong_purchases: 낱개 품목 구매내역 저장
+- boong_orders: boong_purchases의 정보로 총 가격 및 구매 날짜 저장
+
+CREATE TABLE `boong_orders` (
+    `order_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `user_id` BIGINT(20) NOT NULL,
+    `total_price` DECIMAL(10, 2) NOT NULL,
+    `order_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
+    PRIMARY KEY (`order_id`),
+    KEY `user_id` (`user_id`),
+    CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+
+CREATE TABLE `boong_purchases` (
+    `purchase_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `order_id` INT(11) NOT NULL,
+    `menu_id` INT(11) NOT NULL,
+    `quantity` INT(11) NOT NULL,
+    `price` DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (`purchase_id`),
+    KEY `order_id` (`order_id`),
+    KEY `menu_id` (`menu_id`),
+    CONSTRAINT `purchases_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `boong_orders` (`order_id`),
+    CONSTRAINT `purchases_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`menu_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
