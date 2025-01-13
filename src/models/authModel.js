@@ -1,16 +1,17 @@
 import { getDB } from '../database/connection.js' // DB 연결 함수 가져오기
 import errorCode from '../util/error.js'
 
-const saveUserToDB = async (id, nickname, email, address1, address2) => {
+const saveUserToDB = async (id, nickname, email, address1, address2,kakaotoken,token) => {
 	const db = await getDB() // DB 연결 가져오기
 	const query = `
-        INSERT INTO users (id, nickname, email, address1, address2, token)
+        INSERT INTO users (id, nickname, email, address1, address2, kakao_token, server_Token)
         VALUES (?, ?, ?, ?, ?, ?)
 		ON DUPLICATE KEY UPDATE
         nickname = VALUES(nickname),
         email = VALUES(email),
         address1 = VALUES(address1),
         address2 = VALUES(address2),
+        kakao_token = VALUES(kakao_token),
         token = VALUES(token);
     `
 	try {
@@ -20,6 +21,7 @@ const saveUserToDB = async (id, nickname, email, address1, address2) => {
 			email,
 			address1,
 			address2,
+			kakaotoken,
 			token,
 		])
 
@@ -76,3 +78,45 @@ const findByNicknameFromDB = async (nickname) => {
 	}
 }
 export { findByNicknameFromDB }
+
+//카카오 아이디로 조회
+const findUserByKakaoIdFromDB = async (kakao_id) => {
+	const db = await getDB()
+	try {
+		const [rows] = await db.query(
+			'SELECT * FROM users WHERE id = ?',
+			[kakao_id]
+		);
+		
+		return rows[0] || null;
+		
+	} catch (error) {
+		console.error('카카오 ID로 사용자 검색 실패:', error);
+		throw error;
+	}
+}
+
+export { findUserByKakaoIdFromDB }
+
+const updateUserTokensFromDB = async (kakao_id, token, kakaoToken) => {
+    const db = await getDB()
+    try {
+        const [result] = await db.query(
+            'UPDATE users SET token = ?, kakao_token = ? WHERE id = ?',
+            [token, kakaoToken, kakao_id]
+        );
+        
+        // 업데이트된 행이 있는지 확인
+        if (result.affectedRows === 0) {
+            throw new Error('사용자를 찾을 수 없습니다');
+        }
+        
+        return result;
+        
+    } catch (error) {
+        console.error('토큰 업데이트 실패:', error);
+        throw error;
+    }
+}
+
+export { updateUserTokensFromDB };

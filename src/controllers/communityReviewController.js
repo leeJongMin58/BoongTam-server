@@ -131,4 +131,69 @@ export const getGoodsReviews = async (req, res) => {
         res.status(error.code || 500).json({ code: error.code || 500, message:error.message, detail: error.detail || '굿즈 리뷰 조회 중 오류가 발생했습니다.' });
     }
 };
-    
+
+
+// 굿즈 리뷰 상세 리스트 조회
+export const getGoodsReviewDetail = async (req, res) => {
+    const token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(400).json({ ...errorCode[400], detail: '토큰값을 확인해주세요.' });
+    }
+
+    try {
+        const userId = await testvalidateTokenAndUser(token);
+        console.log(userId); // 로그 출력
+
+        const { sort = 'latest', count = 10 } = req.query;
+        const reviews = await communityReviewService.getGoodsReviewDetail(sort, count);
+
+        res.status(200).json({
+            code: 200,
+            msg: '리뷰 상세 조회 성공',
+            count: reviews.length,
+            nextPage: false, // 페이징이 있다면 로직 수정
+            data: reviews,
+        });
+    } catch (error) {
+        console.error('굿즈 리뷰 상세 조회 오류:', error.message);
+        res.status(error.code || 500).json({
+            code: error.code || 500,
+            message: error.message,
+            detail: error.detail || '굿즈 리뷰 상세 조회 중 오류가 발생했습니다.',
+        });
+    }
+};
+
+
+export const getStoreReviewDetail = async (req, res) => {
+    const token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(400).json({ ...errorCode[400], detail: '토큰값을 확인해주세요.' });
+    }
+
+    try {
+        const userId = await testvalidateTokenAndUser(token);
+        console.log(userId); // 로그 출력
+
+        const { sort = 'latest', count = 10 } = req.query;
+        const reviews = await communityReviewService.getStoreReviewDetail(sort, count);
+
+        res.status(200).json({
+            code: 200,
+            msg: '리뷰 상세 조회 성공',
+            count: reviews.length,
+            nextPage: false, // 페이징이 있다면 로직 수정
+            data: reviews,
+        });
+    } catch (error) {
+        console.error('굿즈 리뷰 상세 조회 오류:', error.message);
+        res.status(error.code || 500).json({
+            code: error.code || 500,
+            message: error.message,
+            detail: error.detail || '굿즈 리뷰 상세 조회 중 오류가 발생했습니다.',
+        });
+    }
+};
+

@@ -26,3 +26,22 @@ export const getStoreReviews= async (sort, count) => {
         throw new Error('리뷰 데이터를 가져오는 데 실패했습니다: ' + error.message);
     }
 };
+
+
+// 굿즈 리뷰 상세 리스트 조회
+export const getGoodsReviewDetail = async (sort, count) => {
+    try {
+        return await communityReviewModel.findGoodsReviewDetail(sort, count);
+    } catch (error) {
+        throw new Error('굿즈 리뷰 상세 데이터를 가져오는 데 실패했습니다: ' + error.message);
+    }
+};
+
+
+export const getStoreReviewDetail = async (sort, count) => {
+    try {
+        return await communityReviewModel.findStoreReviewDetail(sort, count);
+    } catch (error) {
+        throw new Error('굿즈 리뷰 상세 데이터를 가져오는 데 실패했습니다: ' + error.message);
+    }
+};
