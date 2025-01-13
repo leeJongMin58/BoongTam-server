@@ -34,11 +34,11 @@ export const createStoreReport = async (req, res) => {
     try {
         const userId = await testvalidateTokenAndUser(token);
 
-        const reportId = await communityStoreReportService.createStoreReport(
+        const { reportId, msg } = await communityStoreReportService.createStoreReport(
             lat, lng, address, name, store_type, appearance_day, open_hour, close_hour, payment_method, is_order_online
         );
 
-        res.status(201).json({ code: 201, msg: '매장 제보 완료', report_id: reportId });
+        res.status(201).json({ code: 201, msg, report_id: reportId });
     } catch (error) {
         console.error('매장 제보 오류:', error.message);
         res.status(error.code || 500).json({ code: error.code || 500, message: error.message, detail: error.detail || '매장 제보 중 오류가 발생했습니다.' });
