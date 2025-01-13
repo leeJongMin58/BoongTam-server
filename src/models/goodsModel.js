@@ -175,3 +175,46 @@ export const fetchPurchaseHistory = async (userId) => {
 		throw error
 	}
 }
+//구매내역 상세보기
+export const fetchPurchaseHistoryDetail = async (userId, purchase_id) => {
+	const connection = getDB()
+
+	const query = `
+			SELECT 
+				DATE(ph.purchase_date) AS purchase_date, 
+				SUM(ph.quantity * g.goods_price) AS total_amount, 
+				ph.status,
+				JSON_ARRAYAGG(
+					JSON_OBJECT(
+						'goods_name', g.goods_name,
+						'image_url', g.image_url,
+						'quantity', ph.quantity,
+						'price', g.goods_price
+					)
+				) AS goods_info
+			FROM purchase_history ph
+			JOIN goods g ON ph.goods_id = g.goods_id
+			WHERE ph.user_id = ? AND ph.purchase_id = ?
+			GROUP BY DATE(ph.purchase_date), ph.status
+			ORDER BY DATE(ph.purchase_date) DESC;
+		`
+
+	try {
+		const [rows] = await connection.query(query, [userId, purchase_id])
+
+		// JSON 파싱 처리
+		const processedRows = rows.map((row) => ({
+			...row,
+			goods_info: JSON.parse(row.goods_info), // 문자열을 JSON으로 파싱
+		}))
+
+		if (processedRows.length > 0) {
+			return { success: true, history: processedRows }
+		} else {
+			return { success: false, message: '구매 내역이 없습니다.' }
+		}
+	} catch (error) {
+		console.error('구매 내역 조회 오류:', error)
+		throw error
+	}
+}

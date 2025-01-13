@@ -184,5 +184,44 @@ const purchaseHistory = async (req, res) => {
 		res.status(500).json(errorCode[500])
 	}
 }
+//구매내역 상세보기
+const purchaseHistoryDetail = async (req, res) => {
+	const token = req.headers.authorization
+	const { purchase_id } = req.params
 
-export { getGoods, getHotitems, cart, addCart, removeFromCart, purchaseHistory }
+	console.log('구매아이디', purchase_id)
+
+	if (!token || !purchase_id) {
+		return res.status(400).json(errorCode[400])
+	}
+	try {
+		const userId = await testvalidateTokenAndUser(token)
+		const result = await goodsService.fetchPurchaseHistoryDetailFromDB(
+			userId,
+			purchase_id,
+		)
+
+		if (result.success) {
+			return res.json({
+				code: 200,
+				msg: '주문 상세 조회 성공',
+				history: result.history,
+			})
+		} else {
+			return res.status(404).json(errorCode[404])
+		}
+	} catch (error) {
+		console.error('서버 오류:', error.message)
+		res.status(500).json(errorCode[500])
+	}
+}
+
+export {
+	getGoods,
+	getHotitems,
+	cart,
+	addCart,
+	removeFromCart,
+	purchaseHistory,
+	purchaseHistoryDetail,
+}
