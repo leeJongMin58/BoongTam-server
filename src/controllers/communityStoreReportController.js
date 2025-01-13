@@ -14,8 +14,12 @@ export const createStoreReport = async (req, res) => {
     if (!token) {
         return res.status(401).json({ ...errorCode[401], detail: '인증 토큰이 필요합니다.' });
     }
-    if (!lat || !lng || !address || !name || !store_type || !open_hour || !close_hour || !appearance_day || !payment_method ||! is_order_online) {
+    // is_order_online은 boolean이라 이쪽 검증에서 검증하면 안 됨
+    if (!lat || !lng || !address || !name || !store_type || !open_hour || !close_hour || !appearance_day || !payment_method) {
         return res.status(400).json({ ...errorCode[400], detail: '필수 필드를 모두 입력해주세요.' });
+    }
+    if (typeof is_order_online !== 'boolean') {
+        return res.status(400).json({ ...errorCode[400], detail: 'is_order_online 필드는 true 또는 false 값이어야 합니다.' });
     }
 
     // appearance_day 검증
