@@ -25,3 +25,12 @@ export const KAKAO_CONFIG = {
 	js: process.env.KAKAO_JS_API_KEY,
 	redirect_url: process.env.KAKAO_REDIRECT_URI,
 }
+
+
+export const config = {
+	api: {
+	  apiKey: process.env.COOLSMS_API_KEY,          // .env 파일에서 API 키 읽기
+	  apiSecretKey: process.env.COOLSMS_API_SECRET_KEY,  // .env 파일에서 API Secret 키 읽기
+	  hpNumber: process.env.COOLSMS_HP_NUMBER,          // .env 파일에서 발신 번호 읽기
+	},
+  };

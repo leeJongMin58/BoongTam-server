@@ -27,6 +27,8 @@
 		"sequelize-cli": "^6.6.2"
 	},
 	"dependencies": {
-		"mariadb": "^3.4.0"
+		"coolsms-node-sdk": "^2.1.0",
+		"mariadb": "^3.4.0",
+		"node-fetch": "^3.3.2"
 	}
 }
