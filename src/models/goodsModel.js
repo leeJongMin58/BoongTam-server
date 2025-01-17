@@ -175,3 +175,54 @@ export const fetchPurchaseHistory = async (userId) => {
 		throw error
 	}
 }
+//구매내역 상세보기
+export const fetchPurchaseHistoryDetail = async (userId, purchase_id) => {
+	const connection = getDB()
+
+	const query = `
+        SELECT 
+        DATE(ph.purchase_date) AS purchase_date, 
+        SUM(ph.quantity * g.goods_price) AS total_amount, 
+        ph.status,
+        JSON_OBJECT(
+            'address1', u.address_1,
+            'address2', u.address_2,
+            'zipcode', u.zipcode,
+            'points', u.points
+        ) AS userdata, -- 사용자 정보를 JSON으로 묶음
+        JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'goods_name', g.goods_name,
+                'image_url', g.image_url,
+                'quantity', ph.quantity,
+                'price', g.goods_price
+            )
+        ) AS goods_info
+        FROM purchase_history ph
+        JOIN goods g ON ph.goods_id = g.goods_id
+        JOIN users u ON ph.user_id = u.id -- users 테이블 조인 조건 수정
+        WHERE ph.user_id = ? AND ph.purchase_id = ?
+        GROUP BY DATE(ph.purchase_date), ph.status, u.address_1, u.address_2, u.zipcode, u.points
+        ORDER BY DATE(ph.purchase_date) DESC;
+    `
+
+	try {
+		const [rows] = await connection.query(query, [userId, purchase_id])
+
+		// JSON 파싱 처리
+		const processedRows = rows.map((row) => ({
+			...row,
+			goods_info: JSON.parse(row.goods_info), // goods_info를 JSON으로 파싱
+			userdata: JSON.parse(row.userdata), // userdata도 JSON으로 파싱
+		}))
+
+		if (processedRows.length > 0) {
+			return { success: true, history: processedRows }
+		} else {
+			return { success: false, message: '구매 내역이 없습니다.' }
+		}
+	} catch (error) {
+		console.error('구매 내역 조회 오류:', error)
+		throw error
+	}
+}
