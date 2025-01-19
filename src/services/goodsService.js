@@ -50,7 +50,59 @@ export const fetchRemoveFromCartFromDB = async (userId, cartId) => {
 export const fetchPurchaseHistoryFromDB = async (userId) => {
 	return await goodsModel.fetchPurchaseHistory(userId)
 }
+//굿즈 상새보기
+export const fetchGoodsDetailsFromDB = async (goods_id) => {
+	return await goodsModel.fetchGoodsDetails(goods_id)
+}
 //구매내역 상세보기
 export const fetchPurchaseHistoryDetailFromDB = async (userId, purchase_id) => {
 	return await goodsModel.fetchPurchaseHistoryDetail(userId, purchase_id)
+}
+//교환 신청 페이지
+export const fetchExchangeFromDB = async (userId, purchase_id) => {
+	return await goodsModel.fetchExchange(userId, purchase_id)
+}
+// 교환 신청
+export const fetchPostExchangeFromDB = async (
+	userId,
+	purchase_id,
+	type,
+	reason,
+	goods_id,
+	quantity,
+) => {
+	return await goodsModel.fetchPostExchange(
+		userId,
+		purchase_id,
+		type,
+		reason,
+		goods_id,
+		quantity,
+	)
+}
+// 결제화면 가져오기
+export const fetchCheckoutFromDB = async (userId, cart_id) => {
+	return await goodsModel.fetchCheckout(userId, cart_id)
+}
+// 반품 신청페이지
+export const fetchReturnFromDB = async (userId, purchase_id) => {
+	return await goodsModel.fetchReturn(userId, purchase_id)
+}
+// 반품 신청 보내기
+export const fetchPostReturnFromDB = async (
+	userId,
+	purchase_id,
+	type,
+	reason,
+	goods_id,
+	quantity,
+) => {
+	return await goodsModel.fetchPostReturn(
+		userId,
+		purchase_id,
+		type,
+		reason,
+		goods_id,
+		quantity,
+	)
 }
