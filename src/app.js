@@ -6,6 +6,7 @@ import goodsRoutes from './routes/goodsRoutes.js'
 import communityRoutes from './routes/communityRoutes.js'
 import verificationRoutes from './routes/verificationRoutes.js';
 import registrationRoutes from './routes/registrationRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js'
 import cors from 'cors'
 
 //login html
@@ -37,6 +38,8 @@ app.use('/user', mypageRoutes)
 //커뮤니티
 app.use('/community', communityRoutes)
 
+// 붕페이
+app.use('/payment', paymentRoutes)
 
 // test code
 app.get('/test', (req, res) => {

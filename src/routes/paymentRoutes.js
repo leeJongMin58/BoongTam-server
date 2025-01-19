@@ -1,8 +1,5 @@
 import express from 'express'
-import {
-	getPaymentDetails,
-	completePayment,
-} from '../controllers/paymentController.js'
+import { getPaymentDetails,completePayment, } from '../controllers/paymentController.js'
 
 const router = express.Router()
 
