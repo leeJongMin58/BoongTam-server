@@ -19,6 +19,7 @@ export const fetchNearbyStores = async (
                 latitude, 
                 longitude, 
                 heart_count,
+				is_order_online,
                 (6371 * ACOS(
                     COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + 
                     SIN(RADIANS(?)) * SIN(RADIANS(latitude))

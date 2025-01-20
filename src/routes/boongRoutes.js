@@ -6,7 +6,7 @@ import { createOrder } from '../controllers/boongOrderController.js'
 const router = Router()
 
 // 지도에서 가장 가까운 매장 검색
-router.get('/', getNearbyStores)
+router.post('/', getNearbyStores)
 
 // 매장 정보 요청
 router.get('/store/:store_id?', getStoreInfo)
