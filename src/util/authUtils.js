@@ -42,12 +42,11 @@ const testvalidateTokenAndUser = async (token) => {
 		// 전체 사용자 데이터 확인
 		const checkQuery = 'SELECT * FROM users'
 		const [allUsers] = await db.execute(checkQuery)
-		console.log('전체 사용자 데이터:', allUsers)
 
 		// 특정 토큰으로 조회
 		const query = 'SELECT id FROM users WHERE token = ?'
 		const [rows] = await db.execute(query, [token])
-		console.log('토큰으로 조회한 결과:', rows)
+
 
 		if (rows.length === 0) {
 			throw {

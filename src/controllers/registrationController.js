@@ -70,7 +70,6 @@ export const loginUser = async (req, res) => {
 export const checkUserId = async (req, res) => {
     const { id } = req.body; // 클라이언트에서 ID를 입력받음
    // const { id } = req.params; 
-    console.log("id",id)
     if (!id) {
         return res.status(400).json({...errorCode[400], detail: '아이디를 입력해주세요.' });
     }
