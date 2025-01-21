@@ -140,6 +140,6 @@ export const findPassword = async (req, res) => {
 
     } catch (err) {
         console.error('비밀번호 찾기 실패:', err);
-        return res.status(500).json({ error: '비밀번호 찾기 처리 실패' });
+        return res.status(500).json({ ...errorCode[500], detail: '비밀번호 찾기 처리 실패' });
     }
 };
