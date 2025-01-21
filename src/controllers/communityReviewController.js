@@ -87,7 +87,7 @@ export const getStoreReviews = async (req, res) => {
         return res.status(400).json({ ...errorCode[400], detail: '토큰값을 확인해주세요.' });
     }
     const userId = await testvalidateTokenAndUser(token);
-    console.log(userId); // 필요한 경우 로그 출력
+    console.log(userId); // 현재 접속 중인 유저
 
     const { sort = 'latest', count = 5 } = req.query;
 

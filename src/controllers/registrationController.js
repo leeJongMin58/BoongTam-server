@@ -4,7 +4,7 @@ import errorCode from '../util/error.js';
 
 // 회원가입 처리
 export const registerUser = async (req, res) => {
-    const { phone, id, password, address_1, address_2, email } = req.body;
+    const { phone, id, password, address_1, address_2, zipcode, email } = req.body;
 
     // 필수값 체크
     if (!phone || !id || !password) {
@@ -13,7 +13,7 @@ export const registerUser = async (req, res) => {
 
     try {
         // 회원가입 처리
-        const result = await registerUserInDB(phone, id, password, address_1, address_2, email);
+        const result = await registerUserInDB(phone, id, password, address_1, address_2, zipcode, email);
 
         if (result.error) {
             return res.status(400).json({ ...errorCode[400], detail: result.error });

@@ -1,9 +1,8 @@
-// services/smsService.js
 import coolsms from 'coolsms-node-sdk';
-import { config } from '../config.js';    // config 파일에서 환경 변수 가져오기
+import { config } from '../config.js';  
 import { saveVerificationCode } from '../models/verificationModel.js';
 
-// 인증 코드 발송 함수
+// 인증 코드 발송
 export const sendTokenToSMS = async (phone) => {
   const code = Math.floor(1000 + Math.random() * 9000).toString();
   const mysms = coolsms.default;

@@ -72,6 +72,24 @@ AWS 클라우드 DB로 연동
 - 붕어빵 매장 제보 api 프론트와 연결 시도
 - 붕어빵 매장 제보 api 수정 address 중복 제보 시 최신 제보로 갱신되도록 함
 
+### 1월 15일
+- 회원가입 및 인증 api 추가
+- jwt 검증 방식으로 마이페이지 회원정보 조회 및 수정 api 변경
+
+### 1월 20일
+- Map api response에 붕탐오더 가능 여부 추가 및, 위경도 request _ post 방식으로 변경
+
+### 1월 21일
+- mypage api 전체 jwt 검증 방식 추가
+- API 보충
+    1) request body에 추가 파라미터 넣기
+    - 회원가입: zipcode 추가(nullable)
+    2) response body에 추가 파라미터 넣기
+    - 매장 리뷰 리스트: 썸네일, 리뷰 이미지 3개, 주소
+    - 굿즈 리뷰 리스트: 굿즈 사진, 리뷰 이미지 3개
+    - 맵 (boong): 매장의 리뷰 개수 및 매장 썸네일 추가
+- DB: review 이미지에 여러개를 넣을 수 있도록 varchar에서 text로 타입 변경
+
 --------------------------
 --- SQL Change Log ---
 --------------------------
@@ -244,3 +262,6 @@ CREATE TABLE `boong_purchases` (
     CONSTRAINT `purchases_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `boong_orders` (`order_id`),
     CONSTRAINT `purchases_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`menu_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+
+11. Store_reviews, goods_reviews의 store_review_photo_url, goods_review_photo_url
+Varchar(255) > TEXT 로 타입 변경

@@ -46,10 +46,10 @@ export const getNearbyStores = async (req, res) => {
 		});
 	} catch (error) {
 		console.error('컨트롤러 오류:', error);
-		res.status(500).json({
-			...errorCode[500],
-			msg: '서버 오류가 발생했습니다.',
-		});
+		res.status(500).json(
+			...errorCode[500]
+		);
+
 	}
 };
 

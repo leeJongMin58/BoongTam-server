@@ -37,9 +37,11 @@ export const findGoodsReviews = async (sort = 'latest', count = 5) => {
         SELECT 
             gr.goods_review_id, 
             gr.goods_id,
-            g.goods_name, -- 추가된 부분
+            g.goods_name,
+            g.image_url,
             gr.goods_rating,
-            gr.review_text, 
+            gr.review_text,
+            gr.goods_review_photo_url, -- 전체 리뷰 사진 URL 추가
             SUBSTRING_INDEX(gr.goods_review_photo_url, ',', 1) AS review_first_image_url,
             gr.review_date,
             u.id AS user_id,
@@ -61,9 +63,11 @@ export const findGoodsReviews = async (sort = 'latest', count = 5) => {
     return rows.map(row => ({
         goods_review_id: row.goods_review_id,
         goods_id: row.goods_id,
+        goods_image_url:row.image_url,
         goods_name: row.goods_name,
         review_text: row.review_text,
         goods_rating: row.goods_rating,
+        goods_review_photo_url:row.goods_review_photo_url,
         review_first_image_url: row.review_first_image_url,
         review_date: row.review_date,
         like_count: row.like_count, // 하트 개수 추가
@@ -83,8 +87,11 @@ export const findStoreReviews = async (sort = 'latest', count = 5) => {
             sr.store_review_id, 
             sr.store_id,
             s.store_name, -- 추가된 부분: stores 테이블의 store_name
+            s.address, -- 매장의 주소 추가
+            s.thumbnail_url, -- 매장의 썸네일 URL 추가
             sr.review_rating,
-            sr.review_text, 
+            sr.review_text,
+            sr.store_review_photo_url, -- 전체 리뷰 사진 URL 추가
             SUBSTRING_INDEX(sr.store_review_photo_url, ',', 1) AS review_first_image_url,
             sr.review_date,
             u.id AS user_id,
@@ -107,8 +114,11 @@ export const findStoreReviews = async (sort = 'latest', count = 5) => {
         store_review_id: row.store_review_id,
         store_id: row.store_id,
         store_name:row.store_name,
+        address: row.address, // 매장 주소 추가
+        thumbnail_url: row.thumbnail_url, // 매장 썸네일 URL 추가
         review_text: row.review_text,
         review_rating: row.review_rating,
+        store_review_photo_url: row.store_review_photo_url, // 전체 리뷰 사진 URL 추가
         review_first_image_url: row.review_first_image_url,
         review_date: row.review_date,
         like_count: row.like_count, // 하트 개수 추가
