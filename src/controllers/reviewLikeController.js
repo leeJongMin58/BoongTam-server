@@ -7,7 +7,7 @@ export const ReviewLikeController = {
     updateLikeStatus: async (req, res) => {
         const token = req.headers.authorization 
         if (!token) {
-            return res.status(401).json(errorCode[401]); // errorCode 적용
+            return res.status(401).json(...errorCode[401]); // errorCode 적용
         }
         const userId = await testvalidateTokenAndUser(token)
 		console.log(userId)

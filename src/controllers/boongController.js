@@ -61,7 +61,7 @@ export const getNearbyStores = async (req, res) => {
 	} catch (error) {
 		console.error('컨트롤러 오류:', error);
 		res.status(500).json(
-			errorCode[500]
+			...errorCode[500]
 		);
 	}
 };

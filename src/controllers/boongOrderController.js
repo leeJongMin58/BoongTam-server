@@ -2,8 +2,6 @@ import * as boongOrderService from '../services/boongOrderService.js';
 import testvalidateTokenAndUser from '../util/authUtils.js'
 import errorCode from '../util/error.js'
 
-
-// 구매내역 저장
 // 구매내역 저장
 export const createOrder = async (req, res) => {
     const token = req.headers.authorization;
@@ -39,7 +37,6 @@ export const createOrder = async (req, res) => {
         });
     }
 };
-
 
 // 구매내역 조회
 export const getOrders = async (req, res) => {

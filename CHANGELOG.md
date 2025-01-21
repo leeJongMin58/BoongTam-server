@@ -254,3 +254,6 @@ CREATE TABLE `boong_purchases` (
     CONSTRAINT `purchases_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `boong_orders` (`order_id`),
     CONSTRAINT `purchases_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`menu_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+
+11. Store_reviews, goods_reviews의 store_review_photo_url, goods_review_photo_url
+Varchar(255) > TEXT 로 타입 변경
