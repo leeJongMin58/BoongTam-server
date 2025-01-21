@@ -245,7 +245,9 @@ export const deleteUserReview = async (req, res) => {
     }
 };
 
-// 사용자 삭제
+
+// 회원 탈퇴
+
 export const deleteAccount = async (req, res) => {
     try {
         const userId = req.user.id; // 미들웨어에서 가져온 사용자 ID
