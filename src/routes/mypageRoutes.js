@@ -15,17 +15,18 @@ router.patch('/info', authenticateToken, updateUserInfo);
 router.delete('/delete', authenticateToken, deleteAccount);
 
 // 전체 리뷰 조회
-router.get('/reviews/:tab', getUserReview);
+router.get('/reviews/:tab', authenticateToken, getUserReview);
 
 // 리뷰 아이디에 따른 리뷰 조회
-router.get('/reviews/:tab/:reviewId', getUserReview);
+router.get('/reviews/:tab/:reviewId', authenticateToken, getUserReview);
 
 // 리뷰 수정
-router.put('/reviews/:tab/:reviewId', updateUserReview);
+router.put('/reviews/:tab/:reviewId', authenticateToken, updateUserReview);
 
 // 리뷰 삭제
-router.delete('/reviews/:tab/:reviewId', deleteUserReview);
+router.delete('/reviews/:tab/:reviewId', authenticateToken, deleteUserReview);
 
+// 주문하기
 router.get('/order', getOrders);
 
 export default router

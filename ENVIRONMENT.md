@@ -1,11 +1,11 @@
-# 로컬 DB
+# 로컬디비
 DB_HOST=localhost
 DB_USER=root          # MariaDB 사용자명
 DB_PASSWORD=1234          # MariaDB 비밀번호
 DB_DATABASE=test      # 사용할 데이터베이스명
 DB_PORT=3307          # MariaDB 포트 (기본 3306)
 
-# 서버 DB
+# 서버 디비
 SERVER_DB_HOST=boongtam-db.cdwqqk8mwt6c.ap-northeast-2.rds.amazonaws.com
 SERVER_DB_USER=admin       
 SERVER_DB_PASSWORD=algoflow1234   
@@ -13,9 +13,22 @@ SERVER_DB_DATABASE=Boong_database
 SERVERP_DB_PORT=3306    
 
 # 포트
-PORT=80
+PORT=81
 
-# 카카오 API
+# 카카오
 KAKAO_REDIRECT_URI=http://127.0.0.1:8081
 KAKAO_JS_API_KEY=13357b33c27c00a01625110fe4f7576d
 KAKAO_REST_API_KEY=f65039729f458b8346277ff5a9799a1a
+
+
+# JWT 설정
+JWT_SECRET=abcd1234%^&*
+JWT_EXPIRES_SEC=2592000  # 30일
+
+# CoolSMS API 정보
+COOLSMS_API_KEY=NCSRRRZFWZBNXILX
+COOLSMS_API_SECRET_KEY=O6IWBEF11W8SUU6IFJ4CHZIUQLTUJZ2V
+COOLSMS_HP_NUMBER=01023619455
+
+# bcrypt 설정
+BYCRPT_SALT_ROUNDS=10
