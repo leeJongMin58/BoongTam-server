@@ -4,13 +4,12 @@ import errorCode from '../util/error.js'
 
 // 매장 리뷰 작성
 export const createStoreReview = async (req, res) => {
-    const token = req.headers.authorization;
+    const userId  = req.user.id;
+    // const userId = decodedUser.id;
+    // const token = req.headers.authorization;
     const { store_id, review_text, review_rating, review_photos } = req.body;
     
-    // 각각의 입력값을 검증하여 세분화된 오류 메시지 제공
-    if (!token) {
-        return res.status(400).json({ ...errorCode[400], detail: '토큰값을 확인해주세요.' });
-    }
+
     if (!store_id) {
         return res.status(400).json({ ...errorCode[400], detail: '매장 ID값을 확인해주세요.' });
     }
@@ -24,10 +23,6 @@ export const createStoreReview = async (req, res) => {
         return res.status(400).json({ ...errorCode[400], detail: '리뷰 사진은 배열 형식이어야 합니다.' });
     }
     try {
-
-        const userId = await testvalidateTokenAndUser(token)
-		console.log(userId)
-        
         const reviewId = await communityReviewService.createStoreReview(
             store_id, userId, review_text, review_rating, review_photos
         );
@@ -41,12 +36,11 @@ export const createStoreReview = async (req, res) => {
 
 // 굿즈 리뷰 작성
 export const createGoodsReview = async (req, res) => {
-    const token = req.headers.authorization;
+    //const token = req.headers.authorization;
+    const userId  = req.user.id;
     const { goods_id, review_text, review_rating, review_photos } = req.body;
 
-
-    // 각각의 입력값을 검증하여 세분화된 오류 메시지 제공
-    if (!token) {
+    if (!userId) {
         return res.status(400).json({ ...errorCode[400], detail: '토큰값을 확인해주세요.' });
     }
     if (!goods_id) {
@@ -63,9 +57,6 @@ export const createGoodsReview = async (req, res) => {
     }
 
     try {
-        const userId = await testvalidateTokenAndUser(token);
-        console.log(userId);
-
         const reviewId = await communityReviewService.createGoodsReview(
             goods_id, userId, review_text, review_rating, review_photos
         );
@@ -80,14 +71,12 @@ export const createGoodsReview = async (req, res) => {
 
 // 매장 리뷰 조회
 export const getStoreReviews = async (req, res) => {
-    const token = req.headers.authorization;  // 토큰을 요청 헤더에서 추출
+    const userId  = req.user.id;
 
     // 토큰이 없을 경우 오류 응답
-    if (!token) {
+    if (!userId) {
         return res.status(400).json({ ...errorCode[400], detail: '토큰값을 확인해주세요.' });
     }
-    const userId = await testvalidateTokenAndUser(token);
-    console.log(userId); // 현재 접속 중인 유저
 
     const { sort = 'latest', count = 5 } = req.query;
 
@@ -107,13 +96,12 @@ export const getStoreReviews = async (req, res) => {
 
 // 굿즈 리뷰 조회
 export const getGoodsReviews = async (req, res) => {
-    const token = req.headers.authorization;  // 토큰을 요청 헤더에서 추출
+    const userId  = req.user.id;
 
     // 토큰이 없을 경우 오류 응답
-    if (!token) {
+    if (!userId) {
         return res.status(400).json({ ...errorCode[400], detail: '토큰값을 확인해주세요.' });
     }
-    const userId = await testvalidateTokenAndUser(token);
     console.log(userId); // 필요한 경우 로그 출력
 
     const { sort = 'latest', count = 5 } = req.query;
@@ -135,14 +123,13 @@ export const getGoodsReviews = async (req, res) => {
 
 // 굿즈 리뷰 상세 리스트 조회
 export const getGoodsReviewDetail = async (req, res) => {
-    const token = req.headers.authorization;
+    const userId  = req.user.id;
 
-    if (!token) {
+    if (!userId) {
         return res.status(400).json({ ...errorCode[400], detail: '토큰값을 확인해주세요.' });
     }
 
     try {
-        const userId = await testvalidateTokenAndUser(token);
         console.log(userId); // 로그 출력
 
         const { sort = 'latest', count = 10 } = req.query;
@@ -167,16 +154,13 @@ export const getGoodsReviewDetail = async (req, res) => {
 
 
 export const getStoreReviewDetail = async (req, res) => {
-    const token = req.headers.authorization;
+    const userId  = req.user.id;
 
-    if (!token) {
+    if (!userId) {
         return res.status(400).json({ ...errorCode[400], detail: '토큰값을 확인해주세요.' });
     }
 
     try {
-        const userId = await testvalidateTokenAndUser(token);
-        console.log(userId); // 로그 출력
-
         const { sort = 'latest', count = 10 } = req.query;
         const reviews = await communityReviewService.getStoreReviewDetail(sort, count);
 

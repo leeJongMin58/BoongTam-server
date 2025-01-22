@@ -6,12 +6,12 @@ import errorCode from '../util/error.js';
 const VALID_DAYS = ['월', '화', '수', '목', '금', '토', '일'];
 
 export const createStoreReport = async (req, res) => {
-    const token = req.headers.authorization;
+    const userId=req.user.id;
     // 오픈 시간, 마감 시간으로 나눔
     const { lat, lng, address, name, store_type, appearance_day, open_hour, close_hour, payment_method, is_order_online } = req.body;
 
     // 입력값 검증
-    if (!token) {
+    if (!userId) {
         return res.status(401).json({ ...errorCode[401], detail: '인증 토큰이 필요합니다.' });
     }
     // is_order_online은 boolean이라 이쪽 검증에서 검증하면 안 됨
@@ -36,8 +36,6 @@ export const createStoreReport = async (req, res) => {
     }
 
     try {
-        const userId = await testvalidateTokenAndUser(token);
-
         const { storeId, msg } = await communityStoreReportService.createStoreReport(
             lat, lng, address, name, store_type, appearance_day, open_hour, close_hour, payment_method, is_order_online
         );
