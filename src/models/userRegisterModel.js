@@ -4,8 +4,8 @@ import { getDB } from '../database/connection.js';
 // 회원가입 처리 - 선택 입력 및 검증
 export const registerUserInDB = async (phone, id, password, address_1, address_2, zipcode, email) => {
   const query = `
-      INSERT INTO users (phone_number, user_id, password, address_1, address_2, zipcode, email) 
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO users (phone_number, user_id, nickname, password, address_1, address_2, zipcode, email) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
   const connection = await getDB();
 
@@ -14,6 +14,7 @@ export const registerUserInDB = async (phone, id, password, address_1, address_2
       const values = [
           phone, 
           id, 
+          id,
           password, 
           address_1 || null,  // address_1이 없으면 null
           address_2 || null,  // address_2가 없으면 null
