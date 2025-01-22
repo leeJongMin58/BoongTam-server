@@ -8,7 +8,6 @@ import {
 import errorCode from '../util/error.js'
 
 export const getNearbyStores = async (req, res) => {
-	// 요청 바디에서 lat, lng 추출
 	const { lat, lng } = req.body;
 	const { count, sort } = req.query; // 정렬 방식과 불러올 매장 수
 	console.log('req.query:', req.query);
@@ -55,7 +54,6 @@ export const getNearbyStores = async (req, res) => {
 
 
 export const getStoreInfo = async (req, res) => {
-
 	const { store_id } = req.params;  // store_id는 URL 파라미터로 받음
 	const { tab, sort, filter } = req.query;  // tab은 기본값 'menu'로 설정
 
@@ -96,7 +94,6 @@ export const getStoreInfo = async (req, res) => {
 			});
 		}
 		
-
 		// 응답 반환
 		res.status(200).json({
 			code: 200,

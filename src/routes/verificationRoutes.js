@@ -1,4 +1,3 @@
-// routes/verificationRoutes.js
 import express from 'express';
 import { sendVerificationCode, verifyCode } from '../controllers/verificationController.js';
 

@@ -245,7 +245,6 @@ export const deleteUserReview = async (req, res) => {
     }
 };
 
-
 // 회원 탈퇴
 export const deleteAccount = async (req, res) => {
     try {

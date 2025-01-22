@@ -1,5 +1,4 @@
 import * as communityStoreReportService from '../services/communityStoreReportService.js';
-import testvalidateTokenAndUser from '../util/authUtils.js';
 import errorCode from '../util/error.js';
 
 // 유효한 요일 목록

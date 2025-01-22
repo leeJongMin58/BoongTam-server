@@ -1,6 +1,6 @@
 import * as goodsService from '../services/goodsService.js'
-import testvalidateTokenAndUser from '../util/authUtils.js'
 import errorCode from '../util/error.js'
+
 // 굿즈가져오기
 const getGoods = async (req, res) => {
 	const {
@@ -10,11 +10,10 @@ const getGoods = async (req, res) => {
 		subcategory = null,
 	} = req.query
 	const pageNumber = parseInt(page)
-	const token = req.headers.authorization
+	const userId = req.user.id
 	console.log(count, pageNumber, category, subcategory)
 
 	try {
-		const userId = await testvalidateTokenAndUser(token)
 		console.log(userId)
 
 		const goods = await goodsService.fetchGoodsFromDB(
@@ -44,11 +43,9 @@ const getGoods = async (req, res) => {
 //핫붕템
 const getHotitems = async (req, res) => {
 	const { count = 5 } = req.query
-	const token = req.headers.authorization
+	const userId = req.user.id
 
 	try {
-		// 토큰검증
-		const userId = await testvalidateTokenAndUser(token)
 		console.log(userId)
 
 		// DB에서 굿즈 정보 가져오기
@@ -76,10 +73,9 @@ const getHotitems = async (req, res) => {
 const cart = async (req, res) => {
 	const { count = 10, page = 1 } = req.query
 	const pageNumber = parseInt(page)
-	const token = req.headers.authorization
+	const userId = req.user.id
 
 	try {
-		const userId = await testvalidateTokenAndUser(token)
 		console.log(userId)
 		const goods = await goodsService.fetchCartFromDB(
 			userId,
@@ -102,14 +98,13 @@ const cart = async (req, res) => {
 //장바구니 담기
 const addCart = async (req, res) => {
 	const { goodsId, quantity } = req.body
-	const token = req.headers.authorization
+	const userId = req.user.id
 
 	if (!goodsId || !quantity) {
 		return res.status(400).json({ msg: '필요한 값이 누락되었습니다.' })
 	}
 
 	try {
-		const userId = await testvalidateTokenAndUser(token)
 		console.log(userId)
 		const result = await goodsService.fetchAddCartFromDB(
 			userId,
@@ -133,14 +128,13 @@ const addCart = async (req, res) => {
 //장바구니 삭제
 const removeFromCart = async (req, res) => {
 	const { cartId } = req.body
-	const token = req.headers.authorization
+	const userId = req.user.id
 
 	if (!cartId) {
 		return res.status(400).json({ msg: '장바구니 ID가 필요합니다.' })
 	}
 
 	try {
-		const userId = await testvalidateTokenAndUser(token)
 		const result = await goodsService.fetchRemoveFromCartFromDB(
 			userId,
 			cartId,
@@ -162,10 +156,9 @@ const removeFromCart = async (req, res) => {
 
 //구매내역
 const purchaseHistory = async (req, res) => {
-	const token = req.headers.authorization
+	const userId = req.user.id
 
 	try {
-		const userId = await testvalidateTokenAndUser(token)
 		const result = await goodsService.fetchPurchaseHistoryFromDB(userId)
 
 		if (result.success) {
@@ -188,13 +181,11 @@ const purchaseHistory = async (req, res) => {
 //굿즈 상세보기
 const goodsDetail = async (req, res) => {
 	const { goods_id } = req.params
-	const token = req.headers.authorization
 
-	if (!goods_id || !token) {
+	if (!goods_id) {
 		return res.status(400).json(errorCode[400])
 	}
 	try {
-		const userId = await testvalidateTokenAndUser(token)
 		const result = await goodsService.fetchGoodsDetailsFromDB(goods_id)
 
 		if (result.success) {
@@ -213,16 +204,15 @@ const goodsDetail = async (req, res) => {
 }
 //구매내역 상세보기
 const purchaseHistoryDetail = async (req, res) => {
-	const token = req.headers.authorization
+	const userId = req.user.id
 	const { purchase_id } = req.params
 
 	console.log('구매아이디', purchase_id)
 
-	if (!token || !purchase_id) {
+	if (!purchase_id) {
 		return res.status(400).json(errorCode[400])
 	}
 	try {
-		const userId = await testvalidateTokenAndUser(token)
 		const result = await goodsService.fetchPurchaseHistoryDetailFromDB(
 			userId,
 			purchase_id,
@@ -245,15 +235,16 @@ const purchaseHistoryDetail = async (req, res) => {
 
 // 교환신청페이지
 const exchange = async (req, res) => {
-	const token = req.headers.authorization
+	//const token = req.headers.authorization
+	const userId = req.user.id
 	const { purchase_id } = req.params
 
 	console.log('교환할 구매내역 아이디:', purchase_id)
-	if (!token || !purchase_id) {
+	if (!purchase_id) {
 		return res.status(404).json(errorCode[404])
 	}
 	try {
-		const userId = await testvalidateTokenAndUser(token)
+		//const userId = await testvalidateTokenAndUser(token)
 		const result = await goodsService.fetchExchangeFromDB(
 			userId,
 			purchase_id,
@@ -275,20 +266,20 @@ const exchange = async (req, res) => {
 }
 //교환 신청 보내기
 const postExchange = async (req, res) => {
-	const token = req.headers.authorization
+	//const token = req.headers.authorization
+	const userId = req.user.id
 	const { purchase_id, reason, goods_id, quantity } = req.body
 	const { type } = req.query
 
 	console.log('교환할 구매내역 아이디:', purchase_id)
 	console.log('처음 입력받은 이유:', reason)
 
-	if (!token || !purchase_id || !type || !reason || !goods_id || !quantity) {
+	if (!userId || !purchase_id || !type || !reason || !goods_id || !quantity) {
 		return res.status(404).json(errorCode[404])
 	}
 
 	try {
-		const userId = await testvalidateTokenAndUser(token)
-
+		//const userId = await testvalidateTokenAndUser(token)
 		const result = await goodsService.fetchPostExchangeFromDB(
 			userId,
 			purchase_id,
@@ -315,16 +306,17 @@ const postExchange = async (req, res) => {
 
 // 결제하기
 const checkout = async (req, res) => {
-	const token = req.headers.authorization
+	//const token = req.headers.authorization
+	const userId = req.user.id
 	const { cart_id } = req.params
 	console.log('구매할 장바구니 아이디 :', cart_id)
 
-	if (!token || !cart_id) {
+	if (!userId || !cart_id) {
 		return res.status(404).json(errorCode[404])
 	}
 
 	try {
-		const userId = await testvalidateTokenAndUser(token)
+		//const userId = await testvalidateTokenAndUser(token)
 		const result = await goodsService.fetchCheckoutFromDB(userId, cart_id)
 
 		if (result.success) {
@@ -343,15 +335,16 @@ const checkout = async (req, res) => {
 }
 // 반품신청 페이지
 const Return = async (req, res) => {
-	const token = req.headers.authorization
+	//const token = req.headers.authorization
+	const userId = req.user.id
 	const { purchase_id } = req.params
 
 	console.log('교환할 구매내역 아이디:', purchase_id)
-	if (!token || !purchase_id) {
+	if (!userId || !purchase_id) {
 		return res.status(404).json(errorCode[404])
 	}
 	try {
-		const userId = await testvalidateTokenAndUser(token)
+		//const userId = await testvalidateTokenAndUser(token)
 		const result = await goodsService.fetchReturnFromDB(userId, purchase_id)
 
 		if (result.success) {
@@ -370,20 +363,20 @@ const Return = async (req, res) => {
 }
 // 반품 신청 보내기
 const postReturn = async (req, res) => {
-	const token = req.headers.authorization
+	//const token = req.headers.authorization
+	const userId = req.user.id
 	const { purchase_id, reason, goods_id, quantity } = req.body
 	const { type } = req.query
 
 	console.log('교환할 구매내역 아이디:', purchase_id)
 	console.log('처음 입력받은 이유:', reason)
 
-	if (!token || !purchase_id || !type || !reason || !goods_id || !quantity) {
+	if (!userId || !purchase_id || !type || !reason || !goods_id || !quantity) {
 		return res.status(404).json(errorCode[404])
 	}
 
 	try {
-		const userId = await testvalidateTokenAndUser(token)
-
+		//const userId = await testvalidateTokenAndUser(token)
 		const result = await goodsService.fetchPostReturnFromDB(
 			userId,
 			purchase_id,

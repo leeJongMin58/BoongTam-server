@@ -6,7 +6,6 @@ export const authenticateToken = (req, res, next) => {
 
     const token = req.headers.authorization;
 
-
     if (!token) {
         return res.status(401).json({ error: '토큰이 제공되지 않았습니다.' });
     }
@@ -24,6 +23,6 @@ export const authenticateToken = (req, res, next) => {
         next(); // 다음 미들웨어 또는 라우트로 이동
         console.log('decoded.id ',  decoded.id)
     } catch (err) {
-        return res.status(403).json({ error: '유효하지 않은 토큰입니다.' });
+        return res.status(403).json({ code: 403, msg: '유효하지 않은 토큰입니다.' });
     }
 };

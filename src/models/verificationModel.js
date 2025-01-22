@@ -1,4 +1,3 @@
-// models/verificationModel.js
 import { getDB } from '../database/connection.js';
 
 // 인증 코드 저장

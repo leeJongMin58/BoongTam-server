@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 
 // 환경 변수 불러오기
 dotenv.config()
+
 //db연결 부분
 export const DB_CONFIG = {
 	host: process.env.DB_HOST,
@@ -25,7 +26,6 @@ export const KAKAO_CONFIG = {
 	js: process.env.KAKAO_JS_API_KEY,
 	redirect_url: process.env.KAKAO_REDIRECT_URI,
 }
-
 
 export const config = {
 	api: {

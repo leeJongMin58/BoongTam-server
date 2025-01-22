@@ -1,7 +1,7 @@
 import express from 'express'
+// import authRoutes from './routes/authRoutes.js'
 import boongRoutes from './routes/boongRoutes.js'
 import mypageRoutes from './routes/mypageRoutes.js'
-// import authRoutes from './routes/authRoutes.js'
 import goodsRoutes from './routes/goodsRoutes.js'
 import communityRoutes from './routes/communityRoutes.js'
 import verificationRoutes from './routes/verificationRoutes.js';
@@ -20,7 +20,6 @@ app.use(cors())
 // app.use('/auth', authRoutes)
 
 // 변경된 Routes
-// app.use('/registration', registrationRoutes);
 app.use('/auth', registrationRoutes)
 
 //문자 인증

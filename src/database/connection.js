@@ -17,4 +17,4 @@ export const connectDB = async () => {
 
 export const getDB = () => db
 
-export default db // 새로 추가한 부분
+export default db

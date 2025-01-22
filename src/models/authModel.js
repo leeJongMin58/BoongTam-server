@@ -1,4 +1,4 @@
-import { getDB } from '../database/connection.js' // DB 연결 함수 가져오기
+import { getDB } from '../database/connection.js'
 import errorCode from '../util/error.js'
 
 const saveUserToDB = async (id, nickname, email, address1, address2,kakaotoken,token) => {
@@ -25,7 +25,6 @@ const saveUserToDB = async (id, nickname, email, address1, address2,kakaotoken,t
 			token,
 		])
 
-		// 결과 반환
 		return result
 	} catch (error) {
 		throw new Error('DB 저장 중 오류: ' + error.message)
