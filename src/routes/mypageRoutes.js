@@ -26,7 +26,7 @@ router.put('/reviews/:tab/:reviewId', authenticateToken, updateUserReview);
 // 리뷰 삭제
 router.delete('/reviews/:tab/:reviewId', authenticateToken, deleteUserReview);
 
-// 주문하기
-router.get('/order', getOrders);
+// 주문 내역 보기
+router.get('/order', authenticateToken, getOrders);
 
 export default router

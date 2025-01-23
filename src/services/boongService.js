@@ -2,8 +2,7 @@ import { getDB } from '../database/connection.js'
 
 export const fetchNearbyStores = async (lat, lng, radius = 5, count = 5, sortOrder = 'ORDER BY distance ASC') => {
 	try {
-		// 반경 필터링을 위한 쿼리 작성
-		// 매장 및 리뷰 개수를 가져오는 쿼리
+		// 반경 필터링(5km) 후 매장 정보 등 가져옴
 		const query = `
             SELECT 
                 s.store_id, 
@@ -34,7 +33,6 @@ export const fetchNearbyStores = async (lat, lng, radius = 5, count = 5, sortOrd
 		const db = getDB();
 		if (!db) throw new Error('DB가 초기화되지 않았습니다.');
 
-		// 쿼리 실행
 		const [rows] = await db.query(query, parameters);
 
 		// 이미지 데이터가 있을 경우 처리

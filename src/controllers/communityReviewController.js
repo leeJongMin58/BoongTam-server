@@ -1,15 +1,11 @@
 import * as communityReviewService from '../services/communityReviewService.js';
-import testvalidateTokenAndUser from '../util/authUtils.js'
 import errorCode from '../util/error.js'
 
 // 매장 리뷰 작성
 export const createStoreReview = async (req, res) => {
     const userId  = req.user.id;
-    // const userId = decodedUser.id;
-    // const token = req.headers.authorization;
     const { store_id, review_text, review_rating, review_photos } = req.body;
     
-
     if (!store_id) {
         return res.status(400).json({ ...errorCode[400], detail: '매장 ID값을 확인해주세요.' });
     }
@@ -36,7 +32,6 @@ export const createStoreReview = async (req, res) => {
 
 // 굿즈 리뷰 작성
 export const createGoodsReview = async (req, res) => {
-    //const token = req.headers.authorization;
     const userId  = req.user.id;
     const { goods_id, review_text, review_rating, review_photos } = req.body;
 

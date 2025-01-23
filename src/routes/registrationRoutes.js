@@ -19,7 +19,4 @@ router.post('/find-ID', findUserId);
 // 비밀번호 찾기 API
 router.post('/find-password', findPassword);
 
-// 보호된 라우트 예시
-// router.get('/protected', authenticateToken, protectedRouteHandler);
-
 export default router;

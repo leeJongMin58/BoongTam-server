@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { getNearbyStores } from '../controllers/boongController.js'
 import { getStoreInfo } from '../controllers/boongController.js'
 import { createOrder } from '../controllers/boongOrderController.js'
+import { authenticateToken } from '../middleware/authMiddleware.js';
 
 const router = Router()
 
@@ -12,5 +13,6 @@ router.post('/', getNearbyStores)
 router.get('/store/:store_id?', getStoreInfo)
 
 // 구매
-router.post('/order', createOrder)
+router.post('/order', authenticateToken, createOrder)
+
 export default router

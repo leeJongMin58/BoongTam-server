@@ -1,14 +1,13 @@
 import * as boongOrderService from '../services/boongOrderService.js';
-import testvalidateTokenAndUser from '../util/authUtils.js'
 import errorCode from '../util/error.js'
 
 // 구매내역 저장
 export const createOrder = async (req, res) => {
-    const token = req.headers.authorization;
-    const { menu_items } = req.body; // [{menu_id: 1, quantity: 2}, ...]
+    const userId = req.user.id;
+    const { menu_items } = req.body; 
 
-    if (!token) {
-        return res.status(400).json({ ...errorCode[400], detail: '토큰값을 확인해주세요.' });
+    if (!userId) {
+        return res.status(400).json({ ...errorCode[400], detail: '사용자 검증 불가' });
     }
 
     if (!menu_items || !Array.isArray(menu_items) || menu_items.length === 0) {
@@ -16,9 +15,6 @@ export const createOrder = async (req, res) => {
     }
 
     try {
-        const userId = await testvalidateTokenAndUser(token);
-        console.log(userId);
-
         const result = await boongOrderService.createOrder(userId, menu_items);
         console.log("result: ", result);
 
@@ -40,18 +36,13 @@ export const createOrder = async (req, res) => {
 
 // 구매내역 조회
 export const getOrders = async (req, res) => {
-    const token = req.headers.authorization;
-
-    if (!token) {
+    const userId = req.user.id;
+    if (!userId) {
         return res.status(400).json({ ...errorCode[400], detail: '토큰값을 확인해주세요.' });
     }
 
     try {
-        const userId = await testvalidateTokenAndUser(token);
-        console.log(userId);
-
         const orders = await boongOrderService.getOrders(userId);
-
         res.status(200).json({
             code: 200,
             orders,
