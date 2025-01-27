@@ -144,8 +144,17 @@
 <img src="https://github.com/user-attachments/assets/78270be3-75db-40a6-925b-06b2004e6145" alt="IA" border="1"></p>
 
 ### ⭐ ERD
+<details>
+<summary> 🔍 breif </summary>
 <p align="center">
 	<img src = "https://github.com/user-attachments/assets/3abec1f4-dc28-42bb-9235-ac3215646fe3"  border="1" alt = "erd"></p>
+</details>
+
+<details>
+<summary> 🔍 details </summary>
+<p align="center">
+	<img src = "https://github.com/user-attachments/assets/a1e51fbf-490e-4e0d-a7ba-33a126abde60"  border="1" alt = "erd"></p>
+</details>
  
 ### API
 
