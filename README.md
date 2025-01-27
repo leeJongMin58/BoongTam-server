@@ -139,11 +139,14 @@
 * [프론트 Git Repo](https://github.com/AlgoFloww/BoongTam-RN) 
 
 ## 💫 프로젝트 개요
-### IA
-<h2 align="center"> 
-<img src="https://i.ibb.co/WPbcYpq/IA.png" alt="IA" border="0"></h2>
+### ⭐ IA
+<p align="center"> 
+<img src="https://github.com/user-attachments/assets/78270be3-75db-40a6-925b-06b2004e6145" alt="IA" border="1"></p>
 
-### ERD
+### ⭐ ERD
+<p align="center">
+	<img src = "https://github.com/user-attachments/assets/3abec1f4-dc28-42bb-9235-ac3215646fe3"  border="1" alt = "erd"></p>
+ 
 ### API
 
 
