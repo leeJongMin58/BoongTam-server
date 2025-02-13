@@ -39,12 +39,15 @@
 * [프론트 Git Repo](https://github.com/AlgoFloww/BoongTam-RN) 
 
 ## 💫 프로젝트 개요
+
+### ⭐ Key Point
+![Image](https://github.com/user-attachments/assets/2c80acad-0c73-4a1b-8f02-0ab7813a297e)
+
 ### ⭐ IA
 <p align="center"> 
 <img src="https://github.com/user-attachments/assets/78270be3-75db-40a6-925b-06b2004e6145" alt="IA" border="1"></p>
 
-### ⭐ Key Point
-![Image](https://github.com/user-attachments/assets/2c80acad-0c73-4a1b-8f02-0ab7813a297e)
+
 
 
 ### ⭐ ERD
