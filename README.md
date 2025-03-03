@@ -22,6 +22,92 @@
 - 4️⃣ 굿즈 및 커뮤니티 리뷰를 관리할 수 있습니다.
 - 5️⃣ AWS 클라우드, RDS와 MariaDB를 활용하여 실시간 데이터를 제공합니다
 
+## 📡 API 목록표
+<details>
+<summary>🔑 auth</summary>
+
+| Route | Name                 | End Point                     | Method | Params Type | LINK                                                                                  |
+|-------|----------------------|-------------------------------|--------|------------|---------------------------------------------------------------------------------------|
+| auth  | 회원가입 API         | BASE_URL/auth/sign            | POST   | body       | [Link](https://algoflow.atlassian.net/wiki/spaces/FBQGL/pages/15892488/new+API)       |
+| auth  | 로그인 API           | BASE_URL/auth                 | POST   | body       | [Link](https://algoflow.atlassian.net/wiki/spaces/FBQGL/pages/15892514/new+API)       |
+| auth  | 닉네임 중복 확인 API | BASE_URL/auth/check-user-id   | POST   | body       | [Link](https://algoflow.atlassian.net/wiki/x/LwDz)                                    |
+| auth  | ID 찾기              | BASE_URL/auth/find-ID         | POST   | body       | [Link](https://algoflow.atlassian.net/wiki/x/NoDy)                                    |
+| auth  | PW 찾기              | BASE_URL/auth/find-password   | POST   | body       | [Link](https://algoflow.atlassian.net/wiki/spaces/FBQGL/pages/15892554/API)           |
+
+</details>
+
+<details>
+<summary>🔓 verification</summary>
+
+| Route        | Name             | End Point                               | Method | Params Type | LINK                                                   |
+|--------------|------------------|-----------------------------------------|--------|------------|--------------------------------------------------------|
+| verification | 인증번호 전송 api | BASE_URL/verification/send-code         | POST   | body       | [Link](https://algoflow.atlassian.net/wiki/x/KIDz)     |
+| verification | 인증번호 검증 api | BASE_URL/verification/verify-code       | POST   | body       | [Link](https://algoflow.atlassian.net/wiki/x/KIDz)     |
+
+</details>
+
+<details>
+<summary>🐠 boong</summary>
+
+| Route | Name                | End Point                                 | Method | Params Type | LINK                                                                                               |
+|-------|---------------------|-------------------------------------------|--------|------------|----------------------------------------------------------------------------------------------------|
+| boong | 매장 지도검색 API    | BASE_URL/boong                            | GET    | query      | [Link](https://algoflow.atlassian.net/wiki/spaces/FBQGL/pages/9568267/Boong+Map+API+_ver+2.1)       |
+| boong | 매장 상세 정보 API   | BASE_URL/boong/store/{storeid}           | GET    | query      | [Link](https://algoflow.atlassian.net/wiki/x/YwCo)                                                 |
+| boong | 붕어빵 구매 API      | BASE_URL/boong/order                     | POST   | body       | [Link](https://algoflow.atlassian.net/wiki/x/CwDq)                                                 |
+
+</details>
+
+<details>
+<summary> 🤝 community</summary>
+
+| Route     | Name                      | End Point                               | Method          | Params Type | LINK                                                                                      |
+|-----------|---------------------------|-----------------------------------------|----------------|------------|-------------------------------------------------------------------------------------------|
+| community | 매장제보하기 API           | {{base}}/community/store               | POST           | body       | [Link](https://algoflow.atlassian.net/l/cp/28hFccou)                                      |
+| community | 매장 리뷰 작성 API         | {{base}}/community/store/review        | POST           | body       | [Link](https://algoflow.atlassian.net/l/cp/G8EWKd0R)                                      |
+| community | 굿즈 리뷰 작성 API         | {{base}}/community/goods/review        | POST           | body       | [Link](https://algoflow.atlassian.net/l/cp/iFmNsnub)                                      |
+| community | 매장 리뷰 리스트 API       | BASE_URL/community/sre                 | GET            | query      | [Link](https://algoflow.atlassian.net/wiki/spaces/FBQGL/pages/7897128/API)               |
+| community | 굿즈 리뷰 리스트 API       | BASE_URL/community/gre                 | GET            | query      | [Link](https://algoflow.atlassian.net/l/cp/Jm8YPsDW)                                      |
+| community | 리뷰 좋아요 토글 API       | BASE_URL/community/re/like             | PATCH          | body       | [Link](https://algoflow.atlassian.net/l/cp/sPobTTAk)                                      |
+| community | 매장 리뷰 상세 리스트 API  | BASE_URL/community/sr/detail           | GET            | query      | [Link](https://algoflow.atlassian.net/wiki/spaces/FBQGL/pages/8486913/API?atl_f=PAGETREE) |
+| community | 굿즈 리뷰 상세 리스트 API  | BASE_URL/community/gd/detail           | GET            | query      | [Link](https://algoflow.atlassian.net/wiki/x/AYCC)                                        |
+
+</details>
+
+<details>
+<summary>🛍 shop</summary>
+
+| Route | Name                      | End Point                                      | Method    | Params Type | LINK                                                                               |
+|-------|---------------------------|------------------------------------------------|----------|------------|------------------------------------------------------------------------------------|
+| shop  | 카테고리별 굿즈 리스트 API | BASE_URL/goods                                 | GET      | query      | [Link](https://algoflow.atlassian.net/wiki/x/cACE)                                 |
+| shop  | 붕템샵 - 핫붕템           | BASE_URL/goods/hotitems                        | GET      | query      | [Link](https://algoflow.atlassian.net/wiki/x/bACF)                                 |
+| shop  | 붕템샵 -장바구니          | BASE_URL/goods/cart                            | GET      | query      | [Link](https://algoflow.atlassian.net/wiki/x/e4CD)                                 |
+| shop  | 붕템샵 -결제              | BASE_URL/goods/checkout                        | POST     | body       | [Link](https://algoflow.atlassian.net/wiki/x/dwCF)                                 |
+| shop  | 붕템샵 -구매내역          | BASE_URL/goods/purchase_history                | GET      | query      | [Link](https://algoflow.atlassian.net/wiki/x/l4CD)                                 |
+| shop  | 붕템샵 -구매내역상세보기   | BASE_URL/goods/purchase_history/{purchase_id}  | GET      | query      | [Link](https://algoflow.atlassian.net/wiki/x/ggCE)                                 |
+| shop  | 붕템샵 -굿즈상세보기       | BASE_URL/goods/{goods_id}                      | GET      | query      | [Link](https://algoflow.atlassian.net/wiki/x/jACE)                                 |
+| shop  | 붕템샵 -배송조회          | BASE_URL/goods/post                            | GET      | query      | [Link](https://algoflow.atlassian.net/wiki/x/DoCJ)                                 |
+| shop  | 붕템샵 -교환              | BASE_URL/goods/exchange                        | GET,POST | body       | [Link](https://algoflow.atlassian.net/wiki/x/JgCP)                                 |
+| shop  | 붕템샵 -반품              | BASE_URL/goods/return                          | GET,POST | body       | [Link](https://algoflow.atlassian.net/wiki/x/KICN)                                 |
+
+</details>
+
+<details>
+<summary>👨‍👧‍👧 user</summary>
+
+| Route | Name               | End Point              | Method         | Params Type       | LINK                                                                                 |
+|-------|--------------------|------------------------|--------------- |-------------------|--------------------------------------------------------------------------------------|
+| user | 마이페이지-회원정보 | BASE_URL/user/info     | GET,PATCH      | body             | [Link](https://algoflow.atlassian.net/wiki/x/LwHI)                                   |
+| user  | 마이페이지-리뷰관리 | BASE_URL/user/reviews  | GET,PUT,DELETE | params,body      | [Link](https://algoflow.atlassian.net/wiki/spaces/FBQGL/pages/13009300/API)          |
+| user  | 마이페이지-배송조회 | BASE_URL/user/deliver  | GET            |                   | [Link](https://algoflow.atlassian.net/wiki/spaces/FBQGL/pages/13107672/API)          |
+| user  | 마이페이지-결제내역 | BASE_URL/user/order    | GET            | only need token  | [Link](https://algoflow.atlassian.net/wiki/spaces/FBQGL/pages/13074846/API)          |
+| user  | 마이페이지-회원탈퇴 | BASE_URL/user/delete   | DELETE         | only need token  | [Link](https://algoflow.atlassian.net/wiki/x/AYD2)                                   |
+
+</details>
+
+
+
+> 자세한 API 명세서는 [구글 공유 드라이브](https://drive.google.com/drive/folders/1S3TX7-JXOGVfKi2HU0dWTRNxNLOaiNpu?usp=sharing)에서 보실 수 있습니다.
+
 ## 💬 프로젝트 소개 
 * 개발 기간:  2024.11.20 ~ 2025.01.23
 * Inspired by **당근마켓** / 가슴속3천원 / 붕세권 
